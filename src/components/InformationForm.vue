@@ -1,25 +1,29 @@
 <template>
+  <header-view />
   <div class="content">
-    <header class="header">
-      <div class="logo">
-        <a href="#">
-          <img src="../assets/images/Group.png" alt="" />
-        </a>
-      </div>
-      <a href="#" class="active">入社手続き</a>
-      <a class="small_link" href="#">ヘルプ</a>
-    </header>
     <form class="form">
-      <div class="form_title">雇用契約について</div>
-      <complete-bar/>
-      <div class="form_calendar">
-        <div class="icon">
-          <a href="">
-            <img src="../assets/images/calendar2.png" alt="" />
-          </a>
+      <div v-if="step < 4">
+        <div v-if="step > 1" class="backStep">
+          <img
+            src="../assets/images/ArrowLeft.png"
+            alt=""
+            @click="handleClickBack"
+          />
+          <p v-if="step > 1">入社手続きの登録をお願いいたします</p>
+          <p v-else>雇用契約について</p>
         </div>
-        <div class="time_text">2021/09/01までご登録ください</div>
+        <div class="form_title">雇用契約について</div>
+        <complete-bar />
+        <div class="form_calendar">
+          <div class="icon">
+            <a href="">
+              <img src="../assets/images/calendar2.png" alt="" />
+            </a>
+          </div>
+          <div class="time_text">2021/09/01までご登録ください</div>
+        </div>
       </div>
+
       <!-- display form -->
       <router-view />
     </form>
@@ -27,20 +31,46 @@
 </template>
 
 <script>
-// import FistForm from "./FistForm.vue";
-// import SecondForm from "./SecondForm.vue";
-import CompleteBar from './CompleteBar.vue'
+import HeaderView from "../view/HeaderView.vue";
+import CompleteBar from "./CompleteBar.vue";
 export default {
   components: {
-    CompleteBar
+    HeaderView,
+    CompleteBar,
     // FistForm,
     // SecondForm,
   },
+  computed: {
+    step() {
+      return this.$store.state.step;
+    },
+  },
+  methods: {
+    handleClickBack() {
+      console.log("back");
+      const formBack = `form${this.step - 1}`;
+      this.$store.dispatch("setStep", this.step - 1);
+      this.$router.push(formBack);
+    },
+  },
 };
 </script> 
-<style scoped lang="scss">
+<style lang="scss">
+p {
+  margin: 0;
+}
 .content {
   width: 100%;
+  .backStep {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding-bottom: 4px;
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
 }
 .header {
   display: flex;
@@ -57,9 +87,10 @@ export default {
     position: relative;
     height: 100%;
     line-height: 64px;
-     color: #999999;
+    color: #999999;
   }
-  .active{
+
+  .active {
     color: #333333;
   }
   .active::after {
@@ -73,7 +104,6 @@ export default {
     left: -8px;
   }
   .small_link {
-   
     font-weight: 400;
   }
 }

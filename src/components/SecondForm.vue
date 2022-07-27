@@ -80,7 +80,7 @@
     <div class="lastnameMain">
       <div class="text_require">
         <p class="require">必須</p>
-        <p class="help-text">姓</p>
+        <p class="help-text">TESSSSSSSSSSST</p>
       </div>
       <input
         class="form_input"
@@ -817,6 +817,7 @@
         style="width: 100%"
         v-model="form.mobilePhoneNumber"
       />
+      <a href="" class="extensionLink"><span>+ </span> 学歴を追加する</a>
     </div>
   </div>
   <div class="form_group">
@@ -1359,6 +1360,7 @@
         v-model="form.annualIncome"
       />
     </div>
+    <a href="" class="extensionLink"><span>+ </span> 学歴を追加する</a>
   </div>
   <div class="form_group">
     <div class="form_title">通勤ルート</div>
@@ -1366,48 +1368,188 @@
       経路が２つ以上ある場合は、運賃の安い方を選択してください。<br />
       片道料金はICカード料金ではなく現金（切符）料金となります。
     </p>
-    <div class="field-name" style="font-weight: 400;">通勤手段1</div>
-    
+    <div class="field-name" style="font-weight: 400">通勤手段1</div>
+
     <div class="commutingMeans">
       <div class="text_require">
         <p class="require">必須</p>
-        <p class="help-text">姓</p>
+        <p class="help-text">通勤手段</p>
       </div>
       <input
         class="form_input"
         type="text"
         placeholder="入力してください"
-        v-model="form.commutingMeans"
+        v-model="form.going"
       />
     </div>
-    <div class="fistnameMain">
+    <div class="departure">
       <div class="text_require">
         <p class="require">必須</p>
-        <p class="help-text">名</p>
+        <p class="help-text">出発地</p>
       </div>
       <input
         class="form_input"
         type="text"
         placeholder="入力してください"
         name="noName"
-        v-model="form.fistnameMain"
+        v-model="form.departure"
       />
     </div>
-    <div class="seiMain">
+    <div class="destination">
       <div class="text_require">
         <p class="require">必須</p>
-        <p class="help-text">セイ</p>
+        <p class="help-text">到着地</p>
       </div>
       <input
         class="form_input"
         type="text"
         placeholder="入力してください"
         name="lastName"
-        v-model="form.seiMain"
+        v-model="form.destination"
       />
+      <a style="margin-bottom: 8px" href="" class="extensionLink"
+        ><span>+ </span> 学歴を追加する</a
+      >
+      <div class="white_content">合計交通費：0円</div>
     </div>
+    <div>
+      <div class="field-name" style="font-weight: 400; margin-top: 32px">
+        建物名称・部屋番号
+      </div>
+      <textarea v-model="form.comment" />
+    </div>
+  </div>
 
-    
+  <div class="form_group">
+    <div class="form_title">自家用車通勤について</div>
+    <div class="text_require">
+      <p class="require">必須</p>
+      <p class="help-text">自家用車の通勤許可を申請しますか？</p>
+    </div>
+    <!-- Select or drop image with Vuejs-->
+    <div>
+      <div class="radio_button" style="margin-bottom: 0px">
+        <div class="radio_button-1">
+          <input
+            type="radio"
+            id="car1"
+            value="yes"
+            v-model="form.isCarCheck"
+          /><label for="car1">はい</label>
+        </div>
+        <div class="radio_button-2">
+          <input
+            type="radio"
+            id="car2"
+            value="no"
+            v-model="form.isCarCheck"
+          /><label for="car2">いいえ</label>
+        </div>
+      </div>
+      <div v-if="form.isCarCheck === 'yes'">
+        <div class="reasonForApplication">
+          <div class="text_require">
+            <p class="require">必須</p>
+            <p class="help-text">出発地</p>
+          </div>
+          <div class="text-important">
+            ※その他を選択した場合は、必ず理由を入力してください
+          </div>
+          <input
+            class="form_input"
+            type="text"
+            placeholder="テキスト"
+            name="noName"
+            v-model="reasonForApplication"
+          />
+        </div>
+        <div class="nameFore">
+          <div class="text_require">
+            <p class="require noActive">必須</p>
+            <p class="help-text filed_noActive">
+              申請事由（その他）を選択した場合は理由を入力してください
+            </p>
+          </div>
+          <textarea style="height: 101px" v-model="form.otherReason" />
+        </div>
+        <div class="commuterVehicle">
+          <div class="text_require">
+            <p class="require">必須</p>
+            <p class="help-text">通勤車両</p>
+          </div>
+          <input
+            class="form_input"
+            type="text"
+            placeholder="テキスト"
+            name="noName"
+            v-model="form.commuterVehicle"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form_group">
+    <div class="form_title">自家用車の業務使用許可について</div>
+    <div class="text_require">
+      <p class="require">必須</p>
+      <p class="help-text">申請事由</p>
+    </div>
+    <!-- Select or drop image with Vuejs-->
+    <div class="radio_button" style="margin-bottom: 0px">
+      <div class="radio_button-1">
+        <input
+          type="radio"
+          id="male"
+          value="yes"
+          v-model="form.isCarCheck2"
+        /><label for="male">はい</label>
+      </div>
+      <div class="radio_button-2">
+        <input
+          type="radio"
+          id="female"
+          value="no"
+          v-model="form.isCarCheck2"
+        /><label for="female">いいえ</label>
+      </div>
+    </div>
+    <div v-if="form.isCarCheck2 === 'yes'">
+      <div class="commuterVehicle">
+        <div class="text_require">
+          <p class="require">必須</p>
+          <p class="help-text">通勤車両</p>
+        </div>
+        <div class="text-important">
+          ※その他を選択した場合は、必ず理由を入力してください
+        </div>
+        <input
+          class="form_input"
+          type="text"
+          placeholder="テキスト"
+          name="noName"
+          v-model="form.commuterVehicle"
+        />
+      </div>
+      <div class="nameFore">
+        <div class="text_require">
+          <p class="require noActive">必須</p>
+          <p class="help-text filed_noActive">
+            申請事由（その他）を選択した場合は理由を入力してください
+          </p>
+        </div>
+        <textarea style="height: 101px" v-model="form.otherReason2" />
+      </div>
+      <div>
+        <div class="field-name" style="font-weight: 400">
+          職業区分でその他を選択の理由
+        </div>
+        <p style="margin-bottom: 5px">
+          その他を選択した方は、詳細内容を入力してください。学生を選択した方は、大学<br />
+          ○年生など、具体的に入力をお願いいたします。
+        </p>
+        <input class="form_input" type="text" style="width: 100%" v-model=""/>
+      </div>
+    </div>
   </div>
   <!-- submit form -->
   <button class="button-agrre" @click.prevent="handleSubumit" type="submit">
@@ -1419,15 +1561,18 @@
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import FormError from "./FormError.vue";
+
 export default {
   components: {
     FormError,
   },
+
   setup() {
     return {
       v$: useVuelidate(),
     };
   },
+
   data() {
     return {
       form: {
@@ -1520,9 +1665,18 @@ export default {
           month: "",
           year: "",
         },
+        //
+
+        going: "",
+        departure: "",
+        destination: "",
+        //
+        isCarCheck: null,
+        isCarCheck2: null,
       },
     };
   },
+
   validations() {
     return {
       form: {
@@ -1539,6 +1693,7 @@ export default {
       },
     };
   },
+
   methods: {
     pickFile(payload) {
       console.log(payload.refEl, payload.setData);
@@ -1555,18 +1710,24 @@ export default {
     },
 
     async handleSubumit() {
-      const isValid = await this.v$.$validate();
-      console.log(this.valid, "abc");
-
-      if (isValid) {
-        this.$store.dispatch("setInfomation", this.form);
+      // const isValid = await this.v$.$validate();
+      if (this.dataVuex) {
+        this.$store.dispatch("setInfomation", { data: this.form, step: 3 });
+        this.$router.push("/form3");
+      } else {
+        alert("chưa nhập đủ các field");
       }
     },
-    computed: {
-      valid() {
-        return async () => await this.v$.$validate();
-      },
+  },
+  computed: {
+    dataVuex() {
+      return this.$store.state.data;
     },
+  },
+  created() {
+    if (this.dataVuex.lastnameMain) {
+      this.form = this.dataVuex;
+    }
   },
 };
 </script>
@@ -1584,6 +1745,21 @@ export default {
   padding: 8px 16px 16px 16px;
   &-info {
     padding: 16px;
+  }
+  textarea {
+    border: none;
+    background-color: white;
+    resize: none;
+    outline: none;
+    width: 522px;
+    height: 150px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+  }
+  .text-important {
+    color: #ed5d5d;
+    font-weight: 400;
+    font-size: 14px;
   }
   .imagePreviewWrapper {
     background-repeat: no-repeat;
@@ -1621,12 +1797,20 @@ export default {
       opacity: 0;
     }
   }
+  .extensionLink {
+    text-decoration: none;
+    color: #007bc3;
+    margin-top: 8px;
+    display: block;
+  }
   .text_require {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: 5px;
     .help-text {
       flex: 1;
+      color: #333333;
     }
   }
   .requireother {
@@ -1659,6 +1843,7 @@ export default {
     padding: 8px;
     width: 100%;
     margin-bottom: 5px;
+    border-bottom: 5px;
   }
   .warning {
     display: flex;
@@ -1837,7 +2022,7 @@ export default {
     background-color: #ed5d5d;
     width: 45px;
     height: 17px;
-    color: #fff;
+    color: #fff !important;
     padding: 0px 10px;
     font-size: 1.2rem;
     border-radius: 2px;
@@ -1846,7 +2031,7 @@ export default {
     background: #999999;
   }
   .filed_noActive {
-    color: #dcdcdc;
+    color: #dcdcdc !important;
   }
   .info {
     display: flex;
@@ -1862,17 +2047,17 @@ export default {
   margin-top: 16px;
   border-radius: 3px;
   overflow: hidden;
-  a {
-    display: block;
-    width: 100%;
-    text-align: center;
-    color: white;
-    text-decoration: none;
-    font-size: 1.8rem;
-    font-weight: 700;
-    line-height: 1.3;
-    padding: 8px;
-    background: #b2b1ff;
-  }
+  display: block;
+  width: 100%;
+  border: none;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 8px;
+  background: #b2b1ff;
+  cursor: pointer;
 }
 </style>

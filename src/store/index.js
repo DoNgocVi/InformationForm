@@ -5,17 +5,21 @@ export default createStore({
     return {
       data: {},
       isAgree: false,
-      step: 1
+      step: 1,
     };
   },
 
   mutations: {
-    setData(state, information) {
-      state.data = { ...state.data, ...information };
+    setData(state, { data, step }) {
+      state.data = { ...state.data, ...data };
+      state.step = step;
     },
     checkAgree(state, payload) {
       state.isAgree = payload.isCheckAgree;
-      state.step = payload.step
+      state.step = payload.step;
+    },
+    setStep(state, payload) {
+      state.step = payload;
     },
   },
 
@@ -25,6 +29,9 @@ export default createStore({
     },
     setCheckAgree({ commit }, payload) {
       commit("checkAgree", payload);
+    },
+    setStep({ commit }, payload) {
+      commit("setStep", payload);
     },
   },
 });

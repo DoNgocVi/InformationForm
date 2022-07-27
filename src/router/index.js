@@ -19,7 +19,20 @@ const routes = [
         component: () => import("../components/SecondForm.vue"),
         meta: { onlyAuthUser: true },
       },
+      {
+        path: "form3",
+        name: "ThirdForm",
+        component: () => import("../components/ThirdForm.vue"),
+        meta: { onlyAuthUser: true },
+      },
+      
     ],
+  },
+  {
+    path: "/complete",
+    name: "CompleteForm",
+    component: () => import("../components/CompleteForm"),
+    meta: { onlyAuthUser: true },
   },
 ];
 const router = createRouter({

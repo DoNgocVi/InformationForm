@@ -1,7 +1,7 @@
 <template>
   <div class="form_group">
-    <div class="warning">
-      <img src="../assets/images/Group_warn.png" alt="" />
+    <div  class="warning">
+      <img style="height: 24px" src="../assets/images/Group_warn.png" alt="" />
       <p>ご確認ください</p>
     </div>
     <p>
@@ -202,7 +202,14 @@ export default {
       isCheckAgree: false,
     };
   },
-  computed: {},
+  computed: {
+    isCheck(){
+      return this.$store.state.isAgree
+    },
+    dataVuex(){
+      return this.$store.state.data
+    }
+  },
   methods: {
     // ...mapActions([['setCheckAgree']]),
     nextForm() {
@@ -210,13 +217,17 @@ export default {
         // setCheckAgree(this.isCheckAgree)
         this.$store.dispatch("setCheckAgree", {
           isCheckAgree: this.isCheckAgree,
-          step: 4,
+          step: 2,
         });
         this.$router.push("/form2");
       }
     },
   },
+  created(){
+    console.log(this.isCheck, this.dataVuex);
+  }
 };
+
 </script>
 
 <style scoped lang="scss">
