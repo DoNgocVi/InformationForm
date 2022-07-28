@@ -80,7 +80,7 @@
     <div class="lastnameMain">
       <div class="text_require">
         <p class="require">必須</p>
-        <p class="help-text">TESSSSSSSSSSST</p>
+        <p class="help-text">姓</p>
       </div>
       <input
         class="form_input"
@@ -311,7 +311,7 @@
       <p class="title_guide">番号をお持ちの方は必ず入力してください</p>
       <input
         class="form_input"
-        type="text"
+        type="number"
         placeholder="入力してください"
         name=""
         v-model="form.insuranceNumber"
@@ -397,12 +397,17 @@
     </div>
     <div class="radio_button" style="margin-bottom: 0">
       <div class="radio_button-1">
-        <input type="radio" id="male" value="Male" v-model="form.picked" />
-        <label for="male">希望する</label>
+        <input type="radio" id="male" value="希望する" v-model="form.picked" />
+        <label for="希望する">希望する</label>
       </div>
       <div class="radio_button-2">
-        <input type="radio" id="female" value="Female" v-model="form.picked" />
-        <label for="female">利用しない</label>
+        <input
+          type="radio"
+          id="female"
+          value="利用しない"
+          v-model="form.picked"
+        />
+        <label for="利用しない">利用しない</label>
       </div>
     </div>
   </div>
@@ -422,6 +427,7 @@
         type="text"
         style="width: 100%"
         placeholder="フリーワードで検索できます"
+        v-model="searchforfinancial"
       />
     </div>
 
@@ -644,11 +650,31 @@
         カードの表の写真を添付してください。
       </p>
       <!-- Select or drop image with Vuejs-->
+      <div
+        v-show="form.previewImage.residentCardPhotoFont"
+        class="imagePreviewWrapper"
+        :style="{
+          'background-image': `url(${form.previewImage.residentCardPhotoFont})`,
+        }"
+      ></div>
       <div class="images_drop">
+        <input
+          @input="
+            pickFile({
+              refEl: 'imgResidentFont',
+              setData: 'residentCardPhotoFont',
+            })
+          "
+          ref="imgResidentFont"
+          class="form-control form-control-sm"
+          id="formFileSm"
+          type="file"
+        />
+
         <img src="../assets/images/upload.png" alt="" />
-        <p :class="{ filed_noActive: !form.isForeigner }">
-          <span>ファイルをドラッグ&amp;ドロップ</span>
-          <br />
+        <div class="mb-3"></div>
+        <p>
+          <span>ファイルをドラッグ&ドロップ</span> <br />
           ファイルをドロップするか、<br />
           ファイルを参照する
         </p>
@@ -663,11 +689,31 @@
         カードの裏の写真を添付してください。
       </p>
       <!-- Select or drop image with Vuejs-->
+      <div
+        v-show="form.previewImage.residentCardPhotoBack"
+        class="imagePreviewWrapper"
+        :style="{
+          'background-image': `url(${form.previewImage.residentCardPhotoBack})`,
+        }"
+      ></div>
       <div class="images_drop">
+        <input
+          @input="
+            pickFile({
+              refEl: 'imgResidentBack',
+              setData: 'residentCardPhotoBack',
+            })
+          "
+          ref="imgResidentBack"
+          class="form-control form-control-sm"
+          id="formFileSm"
+          type="file"
+        />
+
         <img src="../assets/images/upload.png" alt="" />
-        <p :class="{ filed_noActive: !form.isForeigner }">
-          <span>ファイルをドラッグ&amp;ドロップ</span>
-          <br />
+        <div class="mb-3"></div>
+        <p>
+          <span>ファイルをドラッグ&ドロップ</span> <br />
           ファイルをドロップするか、<br />
           ファイルを参照する
         </p>
@@ -1460,7 +1506,7 @@
             type="text"
             placeholder="テキスト"
             name="noName"
-            v-model="reasonForApplication"
+            v-model="forreasonForApplication"
           />
         </div>
         <div class="nameFore">
@@ -1514,10 +1560,10 @@
       </div>
     </div>
     <div v-if="form.isCarCheck2 === 'yes'">
-      <div class="commuterVehicle">
+      <div class="reasonForApplication">
         <div class="text_require">
           <p class="require">必須</p>
-          <p class="help-text">通勤車両</p>
+          <p class="help-text">申請事由</p>
         </div>
         <div class="text-important">
           ※その他を選択した場合は、必ず理由を入力してください
@@ -1527,7 +1573,7 @@
           type="text"
           placeholder="テキスト"
           name="noName"
-          v-model="form.commuterVehicle"
+          v-model="form.reasonForApplication"
         />
       </div>
       <div class="nameFore">
@@ -1540,17 +1586,64 @@
         <textarea style="height: 101px" v-model="form.otherReason2" />
       </div>
       <div>
-        <div class="field-name" style="font-weight: 400">
-          職業区分でその他を選択の理由
-        </div>
-        <p style="margin-bottom: 5px">
-          その他を選択した方は、詳細内容を入力してください。学生を選択した方は、大学<br />
-          ○年生など、具体的に入力をお願いいたします。
+        <div class="field-name" style="font-weight: 700">補足</div>
+        <p style="margin-bottom: 5px; font-size: 14px">
+          運転免許証（両面）のコピーを添付してください
         </p>
-        <input class="form_input" type="text" style="width: 100%" v-model=""/>
+        <input
+          class="form_input"
+          type="text"
+          style="width: 100%"
+          v-model="form.supplement"
+        />
+      </div>
+      <div>
+        <div class="field-name" style="font-weight: 700">車両車検証コピー</div>
+        <p style="margin-bottom: 5px; font-size: 14px">
+          高速道路は原則利用不可。上長が認めた場合にかぎり利用路線の出発IC、到着IC、<br />
+          高速料金を必ず記入してください。
+        </p>
+        <input
+          class="form_input"
+          type="text"
+          style="width: 100%"
+          v-model="form.vehicleVerification"
+        />
+      </div>
+      <div>
+        <div class="field-name" style="font-weight: 700">
+          任意保険の保険証コピー
+        </div>
+        <p style="margin-bottom: 5px; font-size: 14px">
+          任意保険の保険証のコピーを添付してください
+        </p>
+        <input
+          class="form_input"
+          type="text"
+          style="width: 100%"
+          v-model="form.driversLicenseFont"
+        />
+      </div>
+      <div>
+        <div class="field-name" style="font-weight: 700">
+          運転免許証（両面）コピー
+        </div>
+        <p style="margin-bottom: 5px; font-size: 14px">
+          任意保険の保険証のコピーを添付してください
+        </p>
+        <input
+          class="form_input"
+          type="text"
+          style="width: 100%"
+          v-model="form.driversLicenseBack"
+        />
       </div>
     </div>
   </div>
+  <p style="font-size: 14px; color: #666666; margin-top: 32px">
+    入力ありがとうございました。<br />
+    続けて扶養控除申告の入力をお願いいたします。
+  </p>
   <!-- submit form -->
   <button class="button-agrre" @click.prevent="handleSubumit" type="submit">
     入社手続きの入力に進む
@@ -1581,6 +1674,8 @@ export default {
           photoDocument: null,
           pensionBookPhoto: null,
           identificationPhoto: null,
+          residentCardPhotoBack: null,
+          residentCardPhotoFont: null,
         },
         lastnameMain: "",
         fistnameMain: "",
@@ -1590,6 +1685,7 @@ export default {
         fistnameRoMain: "",
         companyName: "",
         picked: [],
+        searchforfinancial: "",
         gender: [],
         dmy: {
           date: null,
@@ -1604,6 +1700,7 @@ export default {
         schoolName: "",
         facultyName: "",
         basicPension: "",
+        insuranceNumber: null,
         oldCompanyName: "",
         accountNumber: "",
         accountName: "",
@@ -1665,14 +1762,32 @@ export default {
           month: "",
           year: "",
         },
+        relationship: "",
+        lastNameRela2: "",
+        fistNameRela2: "",
+        surename2: "",
+        nameMei2: "",
+        genderRela: "",
         //
-
+        provinceRela2: "",
+        autonomousCity2: "",
+        addressRela2: "",
+        buildingNameroomNumber2: "",
+        workOrSchoolName: "",
+        occupationClassification: "",
+        reasonsChoseJob: "",
+        healthInsuranceClassification: "",
+        annualIncome: "",
         going: "",
         departure: "",
         destination: "",
+        comment: "",
         //
         isCarCheck: null,
         isCarCheck2: null,
+        forreasonForApplication: "",
+        otherReason: "",
+        commuterVehicle: "",
       },
     };
   },
@@ -1811,6 +1926,7 @@ export default {
     .help-text {
       flex: 1;
       color: #333333;
+      font-size: 14px;
     }
   }
   .requireother {
