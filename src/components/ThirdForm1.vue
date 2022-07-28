@@ -1,78 +1,6 @@
 
 <template>
   <div class="form_group">
-    <div class="warning">
-      <img src="../assets/images/Group_warn.png" alt="" />
-      <p>ご確認ください</p>
-    </div>
-    <p>
-      表示されている内容を確認いただき、認識に相違が無ければ同意するにチェックをしてください。
-    </p>
-  </div>
-  <div class="form_group">
-    <div class="form_title">顔写真の登録</div>
-    <p class="help-text">
-      システムの本人アイコンに使用します。あなたの顔が分かる写真を登録してください。未登録の場合、姓名の頭文字が表示されます。顔写真見本のように撮影してください。また、背景は白、スーツ着用、身だしなみルールに沿って撮影をお願いいたします。
-    </p>
-    <!-- Select or drop image with Vuejs-->
-    <div
-      v-show="form.previewImage.facePhoto"
-      class="imagePreviewWrapper"
-      :style="{ 'background-image': `url(${form.previewImage.facePhoto})` }"
-    ></div>
-    <div class="images_drop">
-      <input
-        @input="pickFile({ refEl: 'imgFace', setData: 'facePhoto' })"
-        ref="imgFace"
-        class="form-control form-control-sm"
-        id="formFileSm"
-        type="file"
-      />
-
-      <img src="../assets/images/upload.png" alt="" />
-      <div class="mb-3"></div>
-      <p>
-        <span>ファイルをドラッグ&ドロップ</span> <br />
-        ファイルをドロップするか、<br />
-        ファイルを参照する
-      </p>
-    </div>
-    <form-error :errors="v$.form.previewImage.facePhoto.$errors" />
-  </div>
-
-  <div class="form_group">
-    <div class="form_title">本人確認書類</div>
-    <div class="text_require">
-      <p class="require">必須</p>
-      <p class="help-text">運転免許証両面もしくは住民票を添付してください。</p>
-    </div>
-    <!-- Select or drop image with Vuejs-->
-    <div
-      v-show="form.previewImage.photoDocument"
-      class="imagePreviewWrapper"
-      :style="{ 'background-image': `url(${form.previewImage.photoDocument})` }"
-    ></div>
-    <div class="images_drop">
-      <input
-        @input="
-          pickFile({ refEl: 'verificationDocuments', setData: 'photoDocument' })
-        "
-        ref="verificationDocuments"
-        class="form-control form-control-sm"
-        id="formFileSm"
-        type="file"
-      />
-      <img src="../assets/images/upload.png" alt="" />
-      <div class="mb-3"></div>
-      <p>
-        <span>ファイルをドラッグ&ドロップ</span> <br />
-        ファイルをドロップするか、<br />
-        ファイルを参照する
-      </p>
-    </div>
-  </div>
-
-  <div class="form_group">
     <div class="form_title">基本情報登録</div>
     <p class="help-text">
       外国式氏名が戸籍に記載されている場合、国際結婚により戸籍上の姓が外国式の姓となっている、もしくは重国籍で戸籍上の氏名が外国式の氏名となっている場合、戸籍上の綴りで入力してください。
@@ -87,6 +15,7 @@
         type="text"
         placeholder="入力してください"
         v-model="form.lastnameMain"
+        :disabled="true"
       />
     </div>
     <div class="fistnameMain">
@@ -100,6 +29,7 @@
         placeholder="入力してください"
         name="noName"
         v-model="form.fistnameMain"
+        :disabled="true"
       />
     </div>
     <div class="seiMain">
@@ -113,6 +43,7 @@
         placeholder="入力してください"
         name="lastName"
         v-model="form.seiMain"
+        :disabled="true"
       />
     </div>
     <div class="meiMain">
@@ -162,17 +93,17 @@
 
       <div class="radio_button">
         <div class="radio_button-1">
-          <input type="radio" id="male1" value="Male" v-model="form.gender" />
-          <label for="male1">男性</label>
+          <input type="radio" id="male" value="Male" v-model="form.gender" />
+          <label for="male">男性</label>
         </div>
         <div class="radio_button-2">
           <input
             type="radio"
-            id="female1"
+            id="female"
             value="Female"
             v-model="form.gender"
           />
-          <label for="female1">女性</label>
+          <label for="female">女性</label>
         </div>
       </div>
     </div>
@@ -258,8 +189,8 @@
           <label for="educationBg">学歴区分</label>
           <br />
           <select name="" id="educationBg" v-model="form.educationBg">
-            <option value="1">1</option>
-            <option value="2">2</option>
+            <option value="">1</option>
+            <option value="">2</option>
           </select>
         </div>
       </div>
@@ -290,7 +221,7 @@
 
       <!-- Add thêm ngày nhập học -->
       <div v-if="form.isShowAddShool">
-        <div class="title">学歴2</div>
+        <div class="title">学歴1</div>
         <div class="admission">
           <div class="text_require">
             <p class="require">必須</p>
@@ -308,9 +239,9 @@
 
         <div>
           <div>
-            <label for="educationBg2">学歴区分</label>
+            <label for="educationBg">学歴区分</label>
             <br />
-            <select name="" id="educationBg2" v-model="form.educationBg2">
+            <select name="" id="educationBg" v-model="form.educationBg2">
               <option value="">1</option>
               <option value="">2</option>
             </select>
@@ -401,60 +332,21 @@
           'background-image': `url(${form.previewImage.pensionBookPhoto})`,
         }"
       ></div>
-      <div class="images_drop">
-        <input
-          @input="
-            pickFile({
-              refEl: 'pensionBook',
-              setData: 'pensionBookPhoto',
-            })
-          "
-          ref="pensionBook"
-          class="form-control form-control-sm"
-          id="formFileSm"
-          type="file"
-        />
-        <img src="../assets/images/upload.png" alt="" />
-        <div class="mb-3"></div>
-        <p>
-          <span>ファイルをドラッグ&ドロップ</span> <br />
-          ファイルをドロップするか、<br />
-          ファイルを参照する
-        </p>
-      </div>
     </div>
-    <div style="margin-bottom: 6px">
+
+    <div
+      style="margin-bottom: 6px"
+      v-show="form.previewImage.identificationPhoto"
+    >
       <div class="form_title">資格署名書類（雇用保険被保険者証）</div>
       <p class="help-text">雇用保険被保険者証の写真を添付してください</p>
       <!-- Select or drop image with Vuejs-->
       <div
-        v-show="form.previewImage.identificationPhoto"
         class="imagePreviewWrapper"
         :style="{
           'background-image': `url(${form.previewImage.identificationPhoto})`,
         }"
       ></div>
-      <div class="images_drop">
-        <input
-          @input="
-            pickFile({
-              refEl: 'identification',
-              setData: 'identificationPhoto',
-            })
-          "
-          ref="identification"
-          class="form-control form-control-sm"
-          id="formFileSm"
-          type="file"
-        />
-        <img src="../assets/images/upload.png" alt="" />
-        <div class="mb-3"></div>
-        <p>
-          <span>ファイルをドラッグ&ドロップ</span> <br />
-          ファイルをドロップするか、<br />
-          ファイルを参照する
-        </p>
-      </div>
     </div>
     <div class="radio_button" style="margin-bottom: 0">
       <div class="radio_button-1">
@@ -488,7 +380,7 @@
         type="text"
         style="width: 100%"
         placeholder="フリーワードで検索できます"
-        v-model="searchForFinancial"
+        v-model="searchforfinancial"
       />
     </div>
 
@@ -505,7 +397,6 @@
         type="text"
         style="width: 100%"
         placeholder="フリーワードで検索できます"
-        v-model="searchForFinancial1"
       />
     </div>
 
@@ -719,29 +610,6 @@
           'background-image': `url(${form.previewImage.residentCardPhotoFont})`,
         }"
       ></div>
-      <div class="images_drop">
-        <input
-          @input="
-            pickFile({
-              refEl: 'imgResidentFont',
-              setData: 'residentCardPhotoFont',
-            })
-          "
-          ref="imgResidentFont"
-          class="form-control form-control-sm"
-          id="formFileSm"
-          type="file"
-          :disabled="!form.isForeigner"
-        />
-
-        <img src="../assets/images/upload.png" alt="" />
-        <div class="mb-3"></div>
-        <p>
-          <span>ファイルをドラッグ&ドロップ</span> <br />
-          ファイルをドロップするか、<br />
-          ファイルを参照する
-        </p>
-      </div>
     </div>
 
     <div style="margin-bottom: 6px" class="residentCardPhoto-back">
@@ -759,29 +627,6 @@
           'background-image': `url(${form.previewImage.residentCardPhotoBack})`,
         }"
       ></div>
-      <div class="images_drop">
-        <input
-          @input="
-            pickFile({
-              refEl: 'imgResidentBack',
-              setData: 'residentCardPhotoBack',
-            })
-          "
-          ref="imgResidentBack"
-          class="form-control form-control-sm"
-          id="formFileSm"
-          type="file"
-          :disabled="!form.isForeigner"
-        />
-
-        <img src="../assets/images/upload.png" alt="" />
-        <div class="mb-3"></div>
-        <p>
-          <span>ファイルをドラッグ&ドロップ</span> <br />
-          ファイルをドロップするか、<br />
-          ファイルを参照する
-        </p>
-      </div>
     </div>
   </div>
 
@@ -836,7 +681,7 @@
             v-model="form.zipCode.zip2"
           />
         </div>
-        <button>住所取得</button>
+        <button class="btnZipcode">住所取得</button>
       </div>
     </div>
     <div class="provinceRela">
@@ -927,7 +772,7 @@
         style="width: 100%"
         v-model="form.mobilePhoneNumber"
       />
-      <div href="#" class="extensionLink"><span>+ </span> 学歴を追加する</div>
+      <a href="" class="extensionLink"><span>+ </span> 学歴を追加する</a>
     </div>
   </div>
   <div class="form_group">
@@ -1282,20 +1127,20 @@
         <div class="radio_button-1">
           <input
             type="radio"
-            id="male2"
+            id="male"
             value="Male"
             v-model="form.genderRela"
           />
-          <label for="male2">男性</label>
+          <label for="male">男性</label>
         </div>
         <div class="radio_button-2">
           <input
             type="radio"
-            id="female2"
+            id="female"
             value="Female"
             v-model="form.genderRela"
           />
-          <label for="female2">女性</label>
+          <label for="female">女性</label>
         </div>
       </div>
     </div>
@@ -1854,7 +1699,7 @@
           /><label for="car2">いいえ</label>
         </div>
       </div>
-      <div v-if="form.isCarCheck === 'yes'">
+      <div v-if="form.isCarCheck == 'yes'">
         <div class="reasonForApplication">
           <div class="text_require">
             <p class="require">必須</p>
@@ -1921,7 +1766,7 @@
         /><label for="female">いいえ</label>
       </div>
     </div>
-    <div v-if="form.isCarCheck2 === 'yes'">
+    <div v-if="form.isCarCheck2 == 'yes'">
       <div class="reasonForApplication">
         <div class="text_require">
           <p class="require">必須</p>
@@ -1978,28 +1823,6 @@
             'background-image': `url(${form.previewImage.vehicleVerificationPhoto})`,
           }"
         ></div>
-        <div class="images_drop">
-          <input
-            @input="
-              pickFile({
-                refEl: 'vehicleVerification',
-                setData: 'vehicleVerificationPhoto',
-              })
-            "
-            ref="vehicleVerification"
-            class="form-control form-control-sm"
-            id="formFileSm"
-            type="file"
-          />
-
-          <img src="../assets/images/upload.png" alt="" />
-          <div class="mb-3"></div>
-          <p>
-            <span>ファイルをドラッグ&ドロップ</span> <br />
-            ファイルをドロップするか、<br />
-            ファイルを参照する
-          </p>
-        </div>
       </div>
       <div>
         <div class="field-name" style="font-weight: 700">
@@ -2015,28 +1838,6 @@
             'background-image': `url(${form.previewImage.driversLicenseFontPhoto})`,
           }"
         ></div>
-        <div class="images_drop">
-          <input
-            @input="
-              pickFile({
-                refEl: 'driversLicenseFont',
-                setData: 'driversLicenseFontPhoto',
-              })
-            "
-            ref="driversLicenseFont"
-            class="form-control form-control-sm"
-            id="formFileSm"
-            type="file"
-          />
-
-          <img src="../assets/images/upload.png" alt="" />
-          <div class="mb-3"></div>
-          <p>
-            <span>ファイルをドラッグ&ドロップ</span> <br />
-            ファイルをドロップするか、<br />
-            ファイルを参照する
-          </p>
-        </div>
       </div>
       <div>
         <div class="field-name" style="font-weight: 700">
@@ -2052,28 +1853,6 @@
             'background-image': `url(${form.previewImage.driversLicenseBackPhoto})`,
           }"
         ></div>
-        <div class="images_drop">
-          <input
-            @input="
-              pickFile({
-                refEl: 'driversLicenseBack',
-                setData: 'driversLicenseBackPhoto',
-              })
-            "
-            ref="driversLicenseBack"
-            class="form-control form-control-sm"
-            id="formFileSm"
-            type="file"
-          />
-
-          <img src="../assets/images/upload.png" alt="" />
-          <div class="mb-3"></div>
-          <p>
-            <span>ファイルをドラッグ&ドロップ</span> <br />
-            ファイルをドロップするか、<br />
-            ファイルを参照する
-          </p>
-        </div>
       </div>
     </div>
   </div>
@@ -2143,7 +1922,7 @@ export default {
           start: "",
           end: "",
         },
-        educationBg: "",
+        educationBg: [],
         schoolName: "",
         facultyName: "",
         basicPension: "",
@@ -2278,7 +2057,7 @@ export default {
       // const isValid = await this.v$.$validate();
       if (this.dataVuex) {
         this.$store.dispatch("setInfomation", { data: this.form, step: 3 });
-        this.$router.push("/form3");
+        this.$router.push("/complete");
       } else {
         alert("chưa nhập đủ các field");
       }
@@ -2294,19 +2073,26 @@ export default {
   },
   created() {
     this.scrollToTop();
-    this.$store.dispatch("setStep", 2);
-    if (this.dataVuex.lastnameMain) {
+    this.$store.dispatch("setStep", 3);
+    if (this.dataVuex) {
       this.form = this.dataVuex;
+      console.log(this.form.isCarCheck2);
     }
   },
 };
 </script>
-<style scope lang="scss">
+<style scoped lang="scss">
 ::placeholder {
   color: #9999;
 }
 p {
   margin: 0;
+}
+input {
+  background-color: #f8f8f8;
+}
+input:disabled {
+  background-color: #f8f8f8;
 }
 .form_group {
   display: flex;
@@ -2328,6 +2114,12 @@ p {
     height: 150px;
     border: 1px solid #dcdcdc;
     border-radius: 4px;
+  }
+  .btnZipcode {
+    border: 1px solid #007bc3;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #007bc3;
   }
   .text-important {
     color: #ed5d5d;
@@ -2483,10 +2275,10 @@ p {
     button {
       height: 32px;
       width: 116px;
-      border: 1px solid #b2b1ff;
+      border: 1px solid #007bc3;
       border-radius: 4px;
-      background-color: #b2b1ff;
-      color: #ffffff;
+      background: #ffffff;
+      color: #007bc3;
       margin-left: 34px;
     }
   }

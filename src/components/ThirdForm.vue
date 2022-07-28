@@ -24,7 +24,7 @@
         class="form_input"
         type="text"
         placeholder="入力してください"
-       value="âdâdâfsdfsd"
+        value=""
       />
     </div>
     <div class="fistnameMain">
@@ -177,8 +177,6 @@
 
 <script>
 export default {
-  
-
   data() {
     return {
       form: {
@@ -274,12 +272,27 @@ export default {
       },
     };
   },
-  methods:{
-    handleSubumit(){
-      this.$store.dispatch('setStep', 4)
-      this.$router.push('complete')
+  computed: {
+    dataVuex() {
+      return this.$store.state.data;
+    },
+  },
+  methods: {
+    handleSubumit() {
+      this.$store.dispatch("setStep", 4);
+      this.$router.push("complete");
+    },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
+  },
+  created() {
+    this.scrollToTop();
+    this.$store.dispatch("setStep", 3);
+    if (this.dataVuex) {
+      this.form = this.dataVuex;
     }
-  }
+  },
 };
 </script>
 <style scope lang="scss">

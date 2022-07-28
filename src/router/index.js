@@ -21,8 +21,8 @@ const routes = [
       },
       {
         path: "form3",
-        name: "ThirdForm",
-        component: () => import("../components/ThirdForm.vue"),
+        name: "ThirdForm1",
+        component: () => import("../components/ThirdForm1.vue"),
         meta: { onlyAuthUser: true },
       },
       

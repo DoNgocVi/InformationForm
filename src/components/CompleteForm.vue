@@ -10,7 +10,7 @@
         申請がありがとうございました。 <br />
         入社手続きの承認をお待ちください。
       </div>
-      <button class="box_review">申請した内容を見る</button>
+      <button class="box_review" @click.prevent="handleBackForm">申請した内容を見る</button>
     </div>
   </div>
 </template>
@@ -20,6 +20,11 @@ export default {
   components: {
     HeaderView,
   },
+  methods:{
+    handleBackForm(){
+      this.$router.push('form2')
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

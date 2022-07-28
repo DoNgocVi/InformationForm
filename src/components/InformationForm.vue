@@ -20,7 +20,7 @@
               <img src="../assets/images/calendar2.png" alt="" />
             </a>
           </div>
-          <div class="time_text">2021/09/01までご登録ください</div>
+          <div class="time_text">{{ DMY }}までご登録ください</div>
         </div>
       </div>
 
@@ -45,6 +45,11 @@ export default {
       return this.$store.state.step;
     },
   },
+  data() {
+    return {
+      DMY: "",
+    };
+  },
   methods: {
     handleClickBack() {
       console.log("back");
@@ -52,6 +57,14 @@ export default {
       this.$store.dispatch("setStep", this.step - 1);
       this.$router.push(formBack);
     },
+  },
+  created() {
+    const d = new Date();
+    const day = d.getDay();
+    const month = d.getMonth();
+    const year = d.getFullYear();
+    const dmy = `${day}/${month}/${year}`;
+    this.DMY = dmy;
   },
 };
 </script> 

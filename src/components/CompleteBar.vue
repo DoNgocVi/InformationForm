@@ -18,7 +18,7 @@
           <template v-if="item % 2 === 0">
             <img
               class="icon-success"
-              src="../assets/images/Group_pencil_active.png"
+              src="../assets/images/pencilActive.png"
               alt=""
             />
           </template>
@@ -54,9 +54,6 @@ export default {
       step: (state) => state.step,
     }),
   },
-  created(){
-    console.log(this.step);
-  }
 };
 </script>
 

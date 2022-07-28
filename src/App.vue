@@ -12,7 +12,7 @@ export default {
 <style scope lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
 * {
-  box-sizing: border-box ;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -21,7 +21,7 @@ html {
 }
 .containers {
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   display: flex;
   flex-direction: column;
   font-weight: 400;
