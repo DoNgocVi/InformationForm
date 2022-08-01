@@ -13,7 +13,7 @@
           <p v-else>雇用契約について</p>
         </div>
         <div class="form_title">雇用契約について</div>
-        <complete-bar />
+        <complete-bar :steps="steps" />
         <div class="form_calendar">
           <div class="icon">
             <a href="">
@@ -48,11 +48,37 @@ export default {
   data() {
     return {
       DMY: "",
+      steps: [
+        {
+          id: 1,
+          imgNoneActive: require("../assets/images/Group_tick.png"),
+          imgActive: require("../assets/images/Group_tick_active.png"),
+        },
+        {
+          id:2,
+          imgNoneActive: require("../assets/images/Group_pencil.png"),
+          imgActive: require("../assets/images/pencilActive.png"),
+        },
+        {
+          id: 3,
+          imgNoneActive: require("../assets/images/Group_tick.png"),
+          imgActive: require("../assets/images/Group_tick_active.png"),
+        },
+        {
+          id: 4,
+          imgNoneActive: require("../assets/images/Group_pencil.png"),
+          imgActive: require("../assets/images/pencilActive.png"),
+        },
+        {
+          id: 5,
+          imgNoneActive: require("../assets/images/Group_tick.png"),
+          imgActive: require("../assets/images/Group_tick_active.png"),
+        },
+      ],
     };
   },
   methods: {
     handleClickBack() {
-  
       const formBack = `form${this.step - 1}`;
       this.$store.dispatch("setStep", this.step - 1);
       this.$router.push(formBack);

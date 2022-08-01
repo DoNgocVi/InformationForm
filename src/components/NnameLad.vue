@@ -7,29 +7,45 @@
           :style="'width:' + stepperProgress"
         ></div>
       </div>
+
       <div
         class="stepper-item"
-        :class="{ success: step >= item.id }"
-        v-for="item in steps"
+        :class="{ success: step >= item }"
+        v-for="item in 5"
         :key="item"
       >
         <div class="stepper-item-counter">
-          <img class="icon-success" v-bind:src="item.imgActive" alt="" />
-          <img class="icon-noSuccess" v-bind:src="item.imgNoneActive" />
+          <template v-if="item % 2 === 0">
+            <img
+              class="icon-success"
+              src="../assets/images/pencilActive.png"
+              alt=""
+            />
+          </template>
+          <template v-else>
+            <img
+              class="icon-success"
+              src="../assets/images/Group_tick_active.png"
+              alt=""
+            />
+          </template>
+          <div class="icon-noSuccess">
+            <span v-if="item % 2 !== 0">
+              <img src="../assets/images/Group_tick.png" alt="" />
+            </span>
+            <span v-else>
+              <img src="../assets/images/Group_pencil.png" alt="" />
+            </span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import { mapState } from "vuex";
 export default {
-  props: {
-    steps: {
-      required: true,
-      type: Array,
-    },
-  },
   computed: {
     stepperProgress() {
       return (100 / 4) * (this.step - 1) + "%";
@@ -106,7 +122,7 @@ $transiton: all 500ms ease;
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 1;
+      z-index: 2;
       opacity: 0;
       transform: scale(0);
       width: 40px;
@@ -117,11 +133,10 @@ $transiton: all 500ms ease;
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 2;
+      z-index: 1;
       opacity: 1;
       transform: scale(1);
       width: 40px;
-      height: 40px;
       transition: $transiton;
     }
   }
