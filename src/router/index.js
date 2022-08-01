@@ -42,7 +42,6 @@ const router = createRouter({
 
 // router.beforeEach((to, from, next) => {
 //   const isAuth = store.state.isAgree;
-//   console.log(isAuth);
 //   if (to.meta.onlyAuthUser) {
 //     if (isAuth) {
 //       next();

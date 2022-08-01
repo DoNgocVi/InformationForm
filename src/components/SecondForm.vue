@@ -2261,14 +2261,12 @@ export default {
 
   methods: {
     pickFile(payload) {
-      console.log(payload.refEl, payload.setData);
       let input = this.$refs[payload.refEl];
       let file = input.files;
       if (file && file[0]) {
         let reader = new FileReader();
         reader.onload = (e) => {
           this.form.previewImage[payload.setData] = e.target.result;
-          console.log(this.form.previewImage[payload.setData]);
         };
         reader.readAsDataURL(file[0]);
       }

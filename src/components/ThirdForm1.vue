@@ -2040,14 +2040,12 @@ export default {
 
   methods: {
     pickFile(payload) {
-      console.log(payload.refEl, payload.setData);
       let input = this.$refs[payload.refEl];
       let file = input.files;
       if (file && file[0]) {
         let reader = new FileReader();
         reader.onload = (e) => {
           this.form.previewImage[payload.setData] = e.target.result;
-          console.log(this.form.previewImage[payload.setData]);
         };
         reader.readAsDataURL(file[0]);
       }
@@ -2076,7 +2074,6 @@ export default {
     this.$store.dispatch("setStep", 3);
     if (this.dataVuex) {
       this.form = this.dataVuex;
-      console.log(this.form.isCarCheck2);
     }
   },
 };

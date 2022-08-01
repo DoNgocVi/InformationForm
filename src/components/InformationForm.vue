@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     handleClickBack() {
-      console.log("back");
+  
       const formBack = `form${this.step - 1}`;
       this.$store.dispatch("setStep", this.step - 1);
       this.$router.push(formBack);

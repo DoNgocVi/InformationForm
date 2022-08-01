@@ -223,9 +223,7 @@ export default {
       }
     },
   },
-  created(){
-    console.log(this.isCheck, this.dataVuex);
-  }
+ 
 };
 
 </script>
