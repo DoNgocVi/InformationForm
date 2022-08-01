@@ -149,15 +149,15 @@
     <div class="display_info">
       <div class="display_date">
         <p>年齢</p>
-        <p v-if="form.dmy.date">
-          {{ `${form.dmy.date} - ${form.dmy.month} - ${form.dmy.year}` }}
+        <p v-if="form.dmy?.date">
+          {{ `${form.dmy?.date} - ${form.dmy?.month} - ${form.dmy?.year}` }}
         </p>
         <p v-else>生年月日を入力すると表示されます</p>
       </div>
       <div class="companyName">
         <p>ビジネスネーム</p>
         <p>旧姓を利用する等の場合に入力をしてください。</p>
-        <input type="text" v-model="form.companyName" />
+        <input type="text" class="form_input" v-model="form.companyName" />
       </div>
     </div>
   </div>
@@ -375,29 +375,28 @@
       <p style="margin-bottom: 8px">
         ｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます
       </p>
-      <input
-        class="input-search"
-        type="text"
-        style="width: 100%"
-        placeholder="フリーワードで検索できます"
-        v-model="searchforfinancial"
-      />
+      <div class="search_result">
+        <p>{{ form.searchForFinancial }}</p>
+      </div>
     </div>
 
-    <div class="search">
+    <div class="search" v-if="form.searchForFinancial">
       <div class="text_require">
-        <p class="require noActive">必須</p>
-        <p class="help-text filed_noActive">金融機関をフリーワードで検索</p>
+       <p class="require" :class="{ noActive: !form.searchForFinancial }">必須</p>
+        <p class="help-text" :class="{ filed_noActive: !form.searchForFinancial }">
+          支店名をフリーワードで検索
+        </p>
       </div>
-      <p style="margin-bottom: 8px" class="filed_noActive">
+      <p
+        style="margin-bottom: 8px"
+        class="filed_noActive"
+        v-if="!form.searchForFinancial"
+      >
         ｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます
       </p>
-      <input
-        class="input-search filed_noActive"
-        type="text"
-        style="width: 100%"
-        placeholder="フリーワードで検索できます"
-      />
+      <div class="search_result">
+        <p>{{ form.searchForFinancial1 }}</p>
+      </div>
     </div>
 
     <div class="form_title" style="margin-top: 12px">口座預金科目</div>
@@ -440,13 +439,25 @@
   <div class="form_group">
     <div class="form_title">在留カード（外国籍の方はご記入ください）</div>
     <div class="white_content">
-      <input
-        type="checkbox"
-        id="foreigner"
-        v-model="form.isForeigner"
-        style="margin-right: 8px"
-      />
-      <label for="foreigner">外国籍の方はチェックを入れてください</label>
+      <label class="label-checkbox" for="foreigner"
+        ><input
+          type="checkbox"
+          id="foreigner"
+          v-model="form.isForeigner"
+          style="margin-right: 8px"
+        />
+        <img
+          class="item--unchecked"
+          src="../assets/images/unchecked.png"
+          alt="unchecked"
+        />
+        <img
+          class="item--checked"
+          src="../assets/images/checked.png"
+          alt="checked"
+        />
+        <span>外国籍の方はチェックを入れてください</span>
+      </label>
     </div>
 
     <div class="lastNameForeRo">
@@ -595,7 +606,11 @@
         :disabled="!form.isForeigner"
       />
     </div>
-    <div style="margin-bottom: 6px" class="residentCardPhoto-font">
+    <div
+      style="margin-bottom: 6px"
+      class="residentCardPhoto-font"
+      v-show="form.previewImage.residentCardPhotoFont"
+    >
       <div class="form_title" :class="{ filed_noActive: !form.isForeigner }">
         在留カードの写真（表）
       </div>
@@ -612,7 +627,11 @@
       ></div>
     </div>
 
-    <div style="margin-bottom: 6px" class="residentCardPhoto-back">
+    <div
+      style="margin-bottom: 6px"
+      class="residentCardPhoto-back"
+      v-show="form.previewImage.residentCardPhotoBack"
+    >
       <div class="form_title" :class="{ filed_noActive: !form.isForeigner }">
         在留カードの写真（裏）
       </div>
@@ -666,8 +685,8 @@
         <div>
           <input
             type="number"
-            name="date"
-            id="date"
+            name="zipCode"
+            id="zipCode"
             placeholder="西暦（半角"
             v-model="form.zipCode.zip1"
           /><span class="horizontal"></span>
@@ -675,8 +694,8 @@
         <div>
           <input
             type="number"
-            name="date"
-            id="date"
+            name="zipCode"
+            id="zipCode"
             placeholder="西暦（半角"
             v-model="form.zipCode.zip2"
           />
@@ -695,7 +714,6 @@
         style="width: 100%"
         v-model="form.provinceRela"
       />
-      <form-error :errors="v$.form.provinceRela.$errors" />
     </div>
     <div class="autonomousCityRela">
       <div class="text_require">
@@ -708,7 +726,6 @@
         style="width: 100%"
         v-model="form.autonomousCityRela"
       />
-      <form-error :errors="v$.form.autonomousCityRela.$errors" />
     </div>
     <div class="addressRela">
       <div class="text_require">
@@ -721,7 +738,6 @@
         style="width: 100%"
         v-model="form.addressRela"
       />
-      <form-error :errors="v$.form.addressRela.$errors" />
     </div>
     <div>
       <div class="field-name" style="font-weight: 400">建物名称・部屋番号</div>
@@ -732,7 +748,6 @@
         style="width: 100%"
         v-model="form.buildingNameroomNumberRela"
       />
-      <form-error :errors="v$.form.buildingNameroomNumberRela.$errors" />
     </div>
 
     <div class="phoneNumber">
@@ -754,7 +769,6 @@
         style="width: 100%"
         v-model="form.phoneNumberRela"
       />
-      <form-error :errors="v$.form.phoneNumberRela.$errors" />
     </div>
     <div class="mobilePhoneNumber">
       <div class="text_require">
@@ -794,8 +808,7 @@
         <div>
           <input
             type="number"
-            name="date"
-            id="date"
+            id="zipCodeArc"
             placeholder="西暦（半角"
             v-model="form.zipCodeArc.zip1"
           /><span class="horizontal"></span>
@@ -803,8 +816,7 @@
         <div>
           <input
             type="number"
-            name="date"
-            id="date"
+            id="zipCodeArc"
             placeholder="西暦（半角"
             v-model="form.zipCodeArc.zip2"
           />
@@ -942,8 +954,7 @@
         <div>
           <input
             type="number"
-            name="date"
-            id="date"
+            name="zipCodeRela"
             placeholder="半角"
             v-model="form.zipCodeRela.zip1"
           /><span class="horizontal"></span>
@@ -951,8 +962,7 @@
         <div>
           <input
             type="number"
-            name="date"
-            id="date"
+            id="zipCodeRela"
             placeholder="半角"
             v-model="form.zipCodeRela.zip2"
           />
@@ -1026,7 +1036,6 @@
         style="width: 100%"
         v-model="form.phoneNumber"
       />
-      <form-error :errors="v$.form.phoneNumber.$errors" />
     </div>
 
     <div class="mobilePhoneNumber">
@@ -1045,7 +1054,6 @@
         style="width: 100%"
         v-model="form.mobilePhoneNumberRela"
       />
-      <form-error :errors="v$.form.mobilePhoneNumberRela.$errors" />
     </div>
   </div>
   <!-- 家族情報を登録 đăng ký thông tin gia đình -->
@@ -1194,8 +1202,7 @@
         <div>
           <input
             type="number"
-            name="date"
-            id="date"
+            id="zipCodeRela2"
             placeholder="半角"
             v-model="form.zipCodeRela2.zip1"
           /><span class="horizontal"></span>
@@ -1203,8 +1210,7 @@
         <div>
           <input
             type="number"
-            name="date"
-            id="date"
+            id="zipCodeRela2"
             placeholder="半角"
             v-model="form.zipCodeRela2.zip2"
           />
@@ -1861,25 +1867,15 @@
     続けて扶養控除申告の入力をお願いいたします。
   </p>
   <!-- submit form -->
-  <button class="button-agrre" @click.prevent="handleSubumit" type="submit">
-    入社手続きの入力に進む
-  </button>
+  <modal-component />
 </template>
 
 <script>
-import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
-import FormError from "./FormError.vue";
+import ModalComponent from "./ModalComponent.vue";
 
 export default {
   components: {
-    FormError,
-  },
-
-  setup() {
-    return {
-      v$: useVuelidate(),
-    };
+    ModalComponent,
   },
 
   data() {
@@ -1910,7 +1906,7 @@ export default {
         searchForFinancial1: "",
         gender: [],
         dmy: {
-          date: null,
+          date: "",
           month: "",
           year: "",
         },
@@ -2021,23 +2017,6 @@ export default {
     };
   },
 
-  validations() {
-    return {
-      form: {
-        previewImage: {
-          facePhoto: { required },
-        },
-        provinceRela: { required },
-        phoneNumber: { required },
-        autonomousCityRela: { required },
-        addressRela: { required },
-        buildingNameroomNumberRela: { required },
-        phoneNumberRela: { required },
-        mobilePhoneNumberRela: { required },
-      },
-    };
-  },
-
   methods: {
     pickFile(payload) {
       let input = this.$refs[payload.refEl];
@@ -2055,7 +2034,6 @@ export default {
       // const isValid = await this.v$.$validate();
       if (this.dataVuex) {
         this.$store.dispatch("setInfomation", { data: this.form, step: 3 });
-        this.$router.push("/complete");
       } else {
         alert("chưa nhập đủ các field");
       }
@@ -2086,7 +2064,6 @@ p {
   margin: 0;
 }
 input {
-  background-color: #f8f8f8;
 }
 input:disabled {
   background-color: #f8f8f8;
@@ -2145,6 +2122,19 @@ input:disabled {
   .routes {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+  .search_result {
+    height: 40px;
+    width: 116px;
+    padding: 10px;
+    border-radius: 32px;
+    background-color: #ffffff;
+    p{
+      line-height: 20px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #333333;
+    }
   }
   .flex-item {
     display: flex;
@@ -2231,8 +2221,9 @@ input:disabled {
   }
   .form_input {
     height: 48px;
+    background: #f8f8f8;
+    border: 1px solid #f8f8f8;
     border-radius: 4px;
-    border: 1px solid #dcdcdc;
     padding: 14px;
     width: 100%;
     margin-bottom: 5px;
@@ -2307,14 +2298,16 @@ input:disabled {
     input {
       height: 48px;
       width: 160px;
-      border: 1px solid #dcdcdc;
+      border: 1px solid #f8f8f8;
       border-radius: 2px;
+      background: #f8f8f8;
       padding: 8px;
     }
     select {
       width: 100%;
       height: 48px;
-      border: 1px solid #dcdcdc;
+      border: 1px solid #f8f8f8;
+      background-color: #f8f8f8;
       border-radius: 2px;
       padding: 8px;
     }
@@ -2340,9 +2333,10 @@ input:disabled {
     padding: 8px;
     padding: 0px 40px !important;
     height: 48px;
-    border: 1px solid #dcdcdc;
-    border-radius: 2px;
 
+    background: #f8f8f8;
+
+    border: 1px solid #f8f8f8;
     padding-left: 37px;
   }
 
@@ -2372,6 +2366,20 @@ input:disabled {
       width: 50%;
       background-color: #ffffff;
     }
+    input[type="radio"]:checked:after {
+      width: 12px;
+      height: 12px;
+      border-radius: 15px;
+      top: -4px;
+      left: 0px;
+      position: relative;
+      background-color: #45d1c9;
+      content: "";
+      display: inline-block;
+      visibility: visible;
+      border: 2px solid white;
+      outline: #45d1c9 solid 1px;
+    }
   }
   p {
     font-weight: 400;
@@ -2400,6 +2408,24 @@ input:disabled {
       display: grid;
       grid-template-columns: 1em auto;
       gap: 0.5em;
+    }
+    .label-checkbox {
+      margin-left: -10px;
+      align-items: center;
+      display: flex;
+      gap: 8px;
+    }
+    input[type="checkbox"] {
+      appearance: none;
+    }
+    input[type="checkbox"]:checked ~ .item--checked {
+      display: block;
+    }
+    input[type="checkbox"]:checked ~ .item--unchecked {
+      display: none;
+    }
+    .item--checked {
+      display: none;
     }
     .displayRoute {
       display: flex;
@@ -2462,22 +2488,5 @@ input:disabled {
       font-size: 18px;
     }
   }
-}
-.button-agrre {
-  margin-top: 16px;
-  border-radius: 3px;
-  overflow: hidden;
-  display: block;
-  width: 100%;
-  border: none;
-  text-align: center;
-  color: white;
-  text-decoration: none;
-  font-size: 1.8rem;
-  font-weight: 700;
-  line-height: 1.3;
-  padding: 14px 8px;
-  background: #b2b1ff;
-  cursor: pointer;
 }
 </style>

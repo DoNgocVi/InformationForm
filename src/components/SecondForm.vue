@@ -488,14 +488,16 @@
         type="text"
         style="width: 100%"
         placeholder="フリーワードで検索できます"
-        v-model="searchForFinancial"
+        v-model="form.searchForFinancial"
       />
     </div>
 
     <div class="search">
       <div class="text_require">
-        <p class="require noActive">必須</p>
-        <p class="help-text filed_noActive">金融機関をフリーワードで検索</p>
+        <p class="require" :class="{ noActive: !form.searchForFinancial }">必須</p>
+        <p class="help-text" :class="{ filed_noActive: !form.searchForFinancial }">
+          支店名をフリーワードで検索
+        </p>
       </div>
       <p style="margin-bottom: 8px" class="filed_noActive">
         ｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます
@@ -505,7 +507,7 @@
         type="text"
         style="width: 100%"
         placeholder="フリーワードで検索できます"
-        v-model="searchForFinancial1"
+        v-model="form.searchForFinancial1"
       />
     </div>
 
@@ -549,13 +551,25 @@
   <div class="form_group">
     <div class="form_title">在留カード（外国籍の方はご記入ください）</div>
     <div class="white_content">
-      <input
-        type="checkbox"
-        id="foreigner"
-        v-model="form.isForeigner"
-        style="margin-right: 8px"
-      />
-      <label for="foreigner">外国籍の方はチェックを入れてください</label>
+      <label class="label-checkbox" for="foreigner"
+        ><input
+          type="checkbox"
+          id="foreigner"
+          v-model="form.isForeigner"
+          style="margin-right: 8px"
+        />
+        <img
+          class="item--unchecked"
+          src="../assets/images/unchecked.png"
+          alt="unchecked"
+        />
+        <img
+          class="item--checked"
+          src="../assets/images/checked.png"
+          alt="checked"
+        />
+        <span>外国籍の方はチェックを入れてください</span>
+      </label>
     </div>
 
     <div class="lastNameForeRo">
@@ -660,6 +674,13 @@
         :class="{ filed_noActive: !form.isForeigner }"
         v-model="form.residenceTime"
         :disabled="!form.isForeigner"
+        style="
+          height: 48px;
+          width: 160px;
+          border: 1px solid #dcdcdc;
+          border-radius: 2px;
+          padding: 8px;
+        "
       />
     </div>
     <div class="licensesBeyond">
@@ -2127,7 +2148,7 @@ export default {
         fistnameRoMain: "",
         companyName: "",
         picked: [],
-        searchForFinancial: "",
+        searchForFinancial: null,
         searchForFinancial1: "",
         gender: [],
         dmy: {
@@ -2273,8 +2294,9 @@ export default {
     },
 
     async handleSubumit() {
-      // const isValid = await this.v$.$validate();
-      if (this.dataVuex) {
+      // await this.v$.$validate();
+      const isValid = await this.v$.$validate()
+      if (this.dataVuex && isValid) {
         this.$store.dispatch("setInfomation", { data: this.form, step: 3 });
         this.$router.push("/form3");
       } else {
@@ -2289,11 +2311,16 @@ export default {
     dataVuex() {
       return this.$store.state.data;
     },
+    isValid() {
+      return async () => {
+        return await this.v$.$validate();
+      };
+    },
   },
   created() {
     this.scrollToTop();
     this.$store.dispatch("setStep", 2);
-    if (this.dataVuex.lastnameMain) {
+    if (this.dataVuex.provinceRela) {
       this.form = this.dataVuex;
     }
   },
@@ -2581,6 +2608,20 @@ p {
       width: 50%;
       background-color: #ffffff;
     }
+    input[type="radio"]:checked:after {
+      width: 12px;
+      height: 12px;
+      border-radius: 15px;
+      top: -4px;
+      left: 1px;
+      position: relative;
+      background-color: #45d1c9;
+      content: "";
+      display: inline-block;
+      visibility: visible;
+      border: 2px solid white;
+      outline: #45d1c9 solid 1px;
+    }
   }
   p {
     font-weight: 400;
@@ -2609,6 +2650,24 @@ p {
       display: grid;
       grid-template-columns: 1em auto;
       gap: 0.5em;
+    }
+    .label-checkbox {
+      margin-left: -10px;
+      align-items: center;
+      display: flex;
+      gap: 8px;
+    }
+    input[type="checkbox"] {
+      appearance: none;
+    }
+    input[type="checkbox"]:checked ~ .item--checked {
+      display: block;
+    }
+    input[type="checkbox"]:checked ~ .item--unchecked {
+      display: none;
+    }
+    .item--checked {
+      display: none;
     }
     .displayRoute {
       display: flex;

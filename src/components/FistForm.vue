@@ -1,6 +1,6 @@
 <template>
   <div class="form_group">
-    <div  class="warning">
+    <div class="warning">
       <img style="height: 24px" src="../assets/images/Group_warn.png" alt="" />
       <p>ご確認ください</p>
     </div>
@@ -160,15 +160,24 @@
     </div>
     <p class="require">必須</p>
     <div class="white_content">
-      <label class="checkAgree">
-        <input
+      <label class="label-checkbox" for="foreigner"
+        ><input
           type="checkbox"
-          id="hasAgreeToTerms"
-          name="hasAgreeToTerms"
+          id="foreigner"
           v-model="isCheckAgree"
+          style="margin-right: 8px"
         />
-
-        <p class="mb-0">同意する場合はチェックをしてください</p>
+        <img
+          class="item--unchecked"
+          src="../assets/images/unchecked.png"
+          alt="unchecked"
+        />
+        <img
+          class="item--checked"
+          src="../assets/images/checked.png"
+          alt="checked"
+        />
+        <span>同意する場合はチェックをしてください</span>
       </label>
     </div>
   </div>
@@ -203,12 +212,12 @@ export default {
     };
   },
   computed: {
-    isCheck(){
-      return this.$store.state.isAgree
+    isCheck() {
+      return this.$store.state.isAgree;
     },
-    dataVuex(){
-      return this.$store.state.data
-    }
+    dataVuex() {
+      return this.$store.state.data;
+    },
   },
   methods: {
     // ...mapActions([['setCheckAgree']]),
@@ -223,9 +232,7 @@ export default {
       }
     },
   },
- 
 };
-
 </script>
 
 <style scoped lang="scss">
@@ -280,7 +287,24 @@ export default {
     .checkAgree {
       display: flex;
       align-items: center;
+    }
+    .label-checkbox {
+      margin-left: -10px;
+      align-items: center;
+      display: flex;
       gap: 8px;
+    }
+    input[type="checkbox"] {
+      appearance: none;
+    }
+    input[type="checkbox"]:checked ~ .item--checked {
+      display: block;
+    }
+    input[type="checkbox"]:checked ~ .item--unchecked {
+      display: none;
+    }
+    .item--checked {
+      display: none;
     }
     .white_content-line {
       display: flex;
