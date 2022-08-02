@@ -23,6 +23,15 @@
           <div class="time_text">{{ DMY }}までご登録ください</div>
         </div>
       </div>
+      <div class="warning">
+        <div class="warning--img">
+          <img src="../assets/images/Group_warn.png" alt="" />
+          <p>ご確認ください</p>
+        </div>
+        <p>
+          表示されている内容を確認いただき、認識に相違が無ければ同意するにチェックをしてください。
+        </p>
+      </div>
 
       <!-- display form -->
       <router-view />
@@ -55,7 +64,7 @@ export default {
           imgActive: require("../assets/images/Group_tick_active.png"),
         },
         {
-          id:2,
+          id: 2,
           imgNoneActive: require("../assets/images/Group_pencil.png"),
           imgActive: require("../assets/images/pencilActive.png"),
         },
@@ -95,9 +104,6 @@ export default {
 };
 </script> 
 <style lang="scss">
-p {
-  margin: 0;
-}
 .content {
   width: 100%;
   .backStep {
@@ -154,50 +160,25 @@ p {
     width: 100%;
     font-size: 2.4rem;
   }
-
-  .form_calendar {
-    width: 100%;
+  .warning {
     display: flex;
-    margin-top: 29px;
-  }
-  .form_group {
-    display: flex;
-    flex-direction: column;
     gap: 8px;
-    margin-top: 19px;
-    width: 100%;
+    flex-direction: column;
+    padding: 16px;
     background-color: #f1f2f7;
-    padding: 19px;
-    .warning {
+    &--img {
       display: flex;
       gap: 8px;
-      margin-bottom: 16px;
       p {
-        color: black;
+        color: #333333;
         font-weight: 700;
       }
     }
-    p {
-      font-weight: 400;
-      color: #666666;
-    }
-    .form_title {
-      font-size: 1.8rem;
-      p {
-        color: #333333;
-      }
-    }
-    .white_content {
-      font-size: 1.4rem;
-      background-color: #ffffff;
-      line-height: 2.4rem;
-      padding: 10px 8px;
-      border: 1px solid #dcdcdc;
-      border-radius: 4px;
-      p {
-        color: #333333;
-      }
-    }
+  }
+  .form_calendar {
+    width: 100%;
+    display: flex;
+    margin: 29px 0px 19px 0px;
   }
 }
 </style>

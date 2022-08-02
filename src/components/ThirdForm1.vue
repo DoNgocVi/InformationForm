@@ -382,8 +382,13 @@
 
     <div class="search" v-if="form.searchForFinancial">
       <div class="text_require">
-       <p class="require" :class="{ noActive: !form.searchForFinancial }">必須</p>
-        <p class="help-text" :class="{ filed_noActive: !form.searchForFinancial }">
+        <p class="require" :class="{ noActive: !form.searchForFinancial }">
+          必須
+        </p>
+        <p
+          class="help-text"
+          :class="{ filed_noActive: !form.searchForFinancial }"
+        >
           支店名をフリーワードで検索
         </p>
       </div>
@@ -2129,7 +2134,7 @@ input:disabled {
     padding: 10px;
     border-radius: 32px;
     background-color: #ffffff;
-    p{
+    p {
       line-height: 20px;
       font-size: 16px;
       font-weight: 400;

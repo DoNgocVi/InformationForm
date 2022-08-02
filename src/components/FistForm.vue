@@ -1,21 +1,13 @@
 <template>
-  <div class="form_group">
-    <div class="warning">
-      <img style="height: 24px" src="../assets/images/Group_warn.png" alt="" />
-      <p>ご確認ください</p>
-    </div>
-    <p>
-      表示されている内容を確認いただき、認識に相違が無ければ同意するにチェックをしてください。
-    </p>
-  </div>
-
-  <div class="form_group">
-    <div class="form_title">雇用契約期間の定め</div>
+  <!-- 1 -->
+  <FormGroup>
+    <template #title> 雇用契約期間の定め </template>
     <div class="white_content">契約期間の定め：なし</div>
-  </div>
+  </FormGroup>
 
-  <div class="form_group">
-    <div class="form_title">勤務地</div>
+  <!-- 2 -->
+  <FormGroup>
+    <template #title> 勤務地 </template>
     <div class="white_content">
       <p>勤務地</p>
       <p>テキストテキストテキストテキストテキストテキスト</p>
@@ -28,10 +20,10 @@
       <p>仕事内容</p>
       <p>テキストテキストテキストテキストテキストテキスト</p>
     </div>
-  </div>
-
-  <div class="form_group">
-    <div class="form_title">勤務条件</div>
+  </FormGroup>
+  <!-- 3 -->
+  <FormGroup>
+    <template #title>勤務条件</template>
     <div class="white_content">
       <p>勤務区分</p>
       <p>固定勤務</p>
@@ -44,10 +36,10 @@
       <p>所定労働時間 (1日) : 8時間 所定労働時間 (1週間平均 ): 40時間</p>
       <p>労働時間選択区分: 40時間</p>
     </div>
-  </div>
+  </FormGroup>
 
-  <div class="form_group">
-    <div class="form_title">報酬条件</div>
+  <FormGroup>
+    <template #title>報酬条件</template>
     <div class="white_content">
       <p>等級</p>
       <p>1等級</p>
@@ -59,9 +51,6 @@
     <div class="form_title">手当</div>
     <div class="white_content">
       <p>ライフプラン手当: 200,000円</p>
-    </div>
-    <div class="white_content">
-      <p></p>
     </div>
     <div class="white_content">
       <p>役職手当: 200,000円 役職手当2: 200,000円 役職手当3: 200,000円</p>
@@ -84,15 +73,17 @@
       <p>合計支給額</p>
       <p>200,000円</p>
     </div>
-  </div>
-  <div class="form_group">
-    <div class="form_title">賃金の締日・支払日</div>
+  </FormGroup>
+
+  <FormGroup>
+    <template #title>賃金の締日・支払日</template>
     <div class="white_content">
       <p>賃金締日: 毎月末日 賃金支払日: 当月25日</p>
     </div>
-  </div>
-  <div class="form_group">
-    <div class="form_title">制度</div>
+  </FormGroup>
+
+  <FormGroup>
+    <template #title>制度</template>
     <div class="white_content">
       <p>昇給: あり 賞与：あり 退職金: あり</p>
     </div>
@@ -102,9 +93,10 @@
     <div class="white_content">
       <p>定年制: あり 再雇用制度: ある 契約の更新: あり</p>
     </div>
-  </div>
-  <div class="form_group">
-    <div class="form_title">制度</div>
+  </FormGroup>
+
+  <FormGroup>
+    <template #title>制度</template>
     <div class="white_content">
       <div class="white_content-line">
         <p class="number">１</p>
@@ -180,7 +172,8 @@
         <span>同意する場合はチェックをしてください</span>
       </label>
     </div>
-  </div>
+  </FormGroup>
+
   <div class="form_group form_group-info">
     <div class="info">
       <div class="info_icon">
@@ -193,8 +186,8 @@
     </div>
   </div>
   <button
-    class="button-agrre"
-    :class="!isCheckAgree ? 'button-agrre-disable' : ''"
+    class="button-agree"
+    :class="!isCheckAgree ? 'button-agree-disable' : ''"
     @click.prevent="nextForm"
     :disabled="!isCheckAgree"
     type="button"
@@ -203,9 +196,11 @@
   </button>
 </template>
 <script>
-// import { mapActions } from 'vuex';
+import FormGroup from "./FieldForm/FormGroup.vue";
 export default {
-  components: {},
+  components: {
+    FormGroup,
+  },
   data() {
     return {
       isCheckAgree: false,
@@ -235,7 +230,10 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
+p {
+  margin: 0;
+}
 .form_group {
   display: flex;
   flex-direction: column;
@@ -250,7 +248,7 @@ export default {
   .warning {
     display: flex;
     gap: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 4px;
     p {
       color: #333333;
       font-weight: 700;
@@ -262,9 +260,11 @@ export default {
   }
   .form_title {
     font-size: 1.8rem;
-    p {
-      color: #333333;
-    }
+  }
+  .form_content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
   .white_content {
     font-size: 1.4rem;
@@ -322,10 +322,13 @@ export default {
     margin-top: 8px;
     background-color: #ed5d5d;
     width: 45px;
-    color: #fff;
+    color: #fff !important;
     padding: 0px 10px;
     font-size: 1.2rem;
     border-radius: 2px;
+    p {
+      color: #ffffff;
+    }
   }
   .info {
     display: flex;
@@ -337,7 +340,7 @@ export default {
     }
   }
 }
-.button-agrre {
+.button-agree {
   margin-top: 16px;
   border-radius: 3px;
   overflow: hidden;
@@ -354,7 +357,7 @@ export default {
   background: #b2b1ff;
   cursor: pointer;
 }
-.button-agrre-disable {
+.button-agree-disable {
   cursor: not-allowed;
 }
 </style>

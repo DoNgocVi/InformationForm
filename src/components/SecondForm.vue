@@ -1,15 +1,6 @@
 
 <template>
   <div class="form_group">
-    <div class="warning">
-      <img src="../assets/images/Group_warn.png" alt="" />
-      <p>ご確認ください</p>
-    </div>
-    <p>
-      表示されている内容を確認いただき、認識に相違が無ければ同意するにチェックをしてください。
-    </p>
-  </div>
-  <div class="form_group">
     <div class="form_title">顔写真の登録</div>
     <p class="help-text">
       システムの本人アイコンに使用します。あなたの顔が分かる写真を登録してください。未登録の場合、姓名の頭文字が表示されます。顔写真見本のように撮影してください。また、背景は白、スーツ着用、身だしなみルールに沿って撮影をお願いいたします。
@@ -72,149 +63,63 @@
     </div>
   </div>
 
-  <div class="form_group">
-    <div class="form_title">基本情報登録</div>
-    <p class="help-text">
+  <FormGroup>
+    <template #title>基本情報登録</template>
+    <template #infoText>
       外国式氏名が戸籍に記載されている場合、国際結婚により戸籍上の姓が外国式の姓となっている、もしくは重国籍で戸籍上の氏名が外国式の氏名となっている場合、戸籍上の綴りで入力してください。
-    </p>
-    <div class="lastnameMain">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">姓</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        placeholder="入力してください"
-        v-model="form.lastnameMain"
-      />
-    </div>
-    <div class="fistnameMain">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">名</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        placeholder="入力してください"
-        name="noName"
-        v-model="form.fistnameMain"
-      />
-    </div>
-    <div class="seiMain">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">セイ</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        placeholder="入力してください"
-        name="lastName"
-        v-model="form.seiMain"
-      />
-    </div>
-    <div class="meiMain">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">メイ</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        placeholder="入力してください"
-        name="lastName"
-        v-model="form.meiMain"
-      />
-    </div>
-    <div class="lastnameRoMain">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">姓（ローマ字）</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        placeholder="入力してください"
-        name="lastName"
-        v-model="form.lastnameRoMain"
-      />
-    </div>
-    <div class="fistnameRoMain">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">名（ローマ字）</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        placeholder="入力してください"
-        name="fistNameRo"
-        v-model="form.fistnameRoMain"
-      />
-    </div>
-    <div class="gender">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">性別</p>
-      </div>
+    </template>
+    <FormInput
+      inputType="text"
+      helpText="姓"
+      placeholder="入力してください"
+      v-model="form.lastnameMain"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="名"
+      placeholder="入力してください"
+      v-model="form.fistnameMain"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="セイ"
+      placeholder="入力してください"
+      v-model="form.seiMain"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="メイ"
+      placeholder="入力してください"
+      v-model="form.meiMain"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="姓（ローマ字）"
+      placeholder="入力してください"
+      v-model="form.lastnameRoMain"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="名（ローマ字）"
+      placeholder="性別"
+      v-model="form.fistnameRoMain"
+    >
+    </FormInput>
+    <FormInput
+      inputType="radio"
+      helpText="性別"
+      placeholder="入力してください"
+      v-model="form.gender"
+    >
+    </FormInput>
 
-      <div class="radio_button">
-        <div class="radio_button-1">
-          <input type="radio" id="male1" value="Male" v-model="form.gender" />
-          <label for="male1">男性</label>
-        </div>
-        <div class="radio_button-2">
-          <input
-            type="radio"
-            id="female1"
-            value="Female"
-            v-model="form.gender"
-          />
-          <label for="female1">女性</label>
-        </div>
-      </div>
-    </div>
+    <FormBirth v-model="form.dmy"> </FormBirth>
 
-    <div class="birthday">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">生年月日</p>
-      </div>
-      <div class="dateMY">
-        <div>
-          <input
-            type="text"
-            name="date"
-            id="date"
-            v-model="form.dmy.date"
-            placeholder="西暦（半角"
-          />
-          <span>年</span>
-        </div>
-        <div>
-          <input
-            type="text"
-            name="date"
-            id="date"
-            v-model="form.dmy.month"
-            placeholder="西暦（半角"
-          />
-          <span>月</span>
-        </div>
-        <div>
-          <input
-            type="text"
-            name="date"
-            id="date"
-            v-model="form.dmy.year"
-            placeholder="半角"
-          />
-          <span>日</span>
-        </div>
-      </div>
-    </div>
     <div class="display_info">
       <div class="display_date">
         <p>年齢</p>
@@ -229,37 +134,88 @@
         <input type="text" v-model="form.companyName" />
       </div>
     </div>
-  </div>
+  </FormGroup>
 
-  <div class="form_group">
-    <div class="form_title">最終学歴</div>
-    <p class="help-text">
+  <FormGroup>
+    <template #title>最終学歴</template>
+    <template #infoText>
       最終学歴が大学院の方は、大学を登録後に「＋学歴を追加する」から大学院を登録してください。
-    </p>
-    <div class="education_option">
-      <div class="title">学歴1</div>
+    </template>
+    <div class="title">学歴1</div>
+    <FormInput
+      inputType="date"
+      helpText="入学年月日"
+      placeholder="入力してください"
+      v-model="form.courseTime.start"
+      width="160px"
+    >
+    </FormInput>
+    <FormInput
+      inputType="date"
+      helpText="卒業年月日"
+      placeholder="入力してください"
+      v-model="form.courseTime.end"
+      width="160px"
+    >
+    </FormInput>
+
+    <div>
+      <label for="educationBg">学歴区分</label>
+      <br />
+      <select
+        class="form_input"
+        name=""
+        id="educationBg"
+        v-model="form.educationBg"
+      >
+        <option value="1">1</option>
+        <option value="2">2</option>
+      </select>
+    </div>
+    <FormInput
+      inputType="text"
+      helpText="学校名"
+      placeholder="入力してください"
+      v-model="form.schoolName"
+    >
+    </FormInput>
+    <div class="facultyName">
+      <div>
+        <p class="title">学部名</p>
+        <input
+          class="form_input"
+          style="width: 100%; margin-top: 8px"
+          type="text"
+          v-model="form.facultyName"
+        />
+      </div>
+    </div>
+
+    <!-- Add thêm ngày nhập học -->
+    <div v-if="form.isShowAddShool">
+      <div class="title">学歴2</div>
       <div class="admission">
         <div class="text_require">
           <p class="require">必須</p>
           <p class="help-text">入学年月日</p>
         </div>
-        <input type="date" v-model="form.courseTime.start" />
+        <input type="date" v-model="form.courseTime2.start" />
       </div>
       <div class="admission">
         <div class="text_require">
           <p class="require">必須</p>
           <p class="help-text">卒業年月日</p>
         </div>
-        <input type="date" v-model="form.courseTime.end" />
+        <input type="date" v-model="form.courseTime2.end" />
       </div>
 
       <div>
         <div>
-          <label for="educationBg">学歴区分</label>
+          <label for="educationBg2">学歴区分</label>
           <br />
-          <select name="" id="educationBg" v-model="form.educationBg">
-            <option value="1">1</option>
-            <option value="2">2</option>
+          <select name="" id="educationBg2" v-model="form.educationBg2">
+            <option value="">1</option>
+            <option value="">2</option>
           </select>
         </div>
       </div>
@@ -273,7 +229,7 @@
             class="input-search"
             style="width: 100%"
             type="text"
-            v-model="form.schoolName"
+            v-model="form.schoolName2"
           />
         </div>
       </div>
@@ -283,62 +239,8 @@
           <input
             style="width: 100%; margin-top: 8px"
             type="text"
-            v-model="form.facultyName"
+            v-model="form.facultyName2"
           />
-        </div>
-      </div>
-
-      <!-- Add thêm ngày nhập học -->
-      <div v-if="form.isShowAddShool">
-        <div class="title">学歴2</div>
-        <div class="admission">
-          <div class="text_require">
-            <p class="require">必須</p>
-            <p class="help-text">入学年月日</p>
-          </div>
-          <input type="date" v-model="form.courseTime2.start" />
-        </div>
-        <div class="admission">
-          <div class="text_require">
-            <p class="require">必須</p>
-            <p class="help-text">卒業年月日</p>
-          </div>
-          <input type="date" v-model="form.courseTime2.end" />
-        </div>
-
-        <div>
-          <div>
-            <label for="educationBg2">学歴区分</label>
-            <br />
-            <select name="" id="educationBg2" v-model="form.educationBg2">
-              <option value="">1</option>
-              <option value="">2</option>
-            </select>
-          </div>
-        </div>
-        <div class="schoolName">
-          <div>
-            <div class="text_require">
-              <p class="require">必須</p>
-              <p class="help-text">学校名</p>
-            </div>
-            <input
-              class="input-search"
-              style="width: 100%"
-              type="text"
-              v-model="form.schoolName2"
-            />
-          </div>
-        </div>
-        <div class="facultyName">
-          <div>
-            <p class="title">学部名</p>
-            <input
-              style="width: 100%; margin-top: 8px"
-              type="text"
-              v-model="form.facultyName2"
-            />
-          </div>
         </div>
       </div>
     </div>
@@ -350,7 +252,7 @@
       class="extensionLink"
       ><span>+ </span> 学歴を追加する</a
     >
-  </div>
+  </FormGroup>
   <div class="form_group">
     <div class="form_title">保険年金</div>
     <div class="basicPension">
@@ -494,8 +396,13 @@
 
     <div class="search">
       <div class="text_require">
-        <p class="require" :class="{ noActive: !form.searchForFinancial }">必須</p>
-        <p class="help-text" :class="{ filed_noActive: !form.searchForFinancial }">
+        <p class="require" :class="{ noActive: !form.searchForFinancial }">
+          必須
+        </p>
+        <p
+          class="help-text"
+          :class="{ filed_noActive: !form.searchForFinancial }"
+        >
           支店名をフリーワードで検索
         </p>
       </div>
@@ -2112,10 +2019,16 @@
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import FormError from "./FormError.vue";
+import FormGroup from "./FieldForm/FormGroup.vue";
+import FormInput from "./FieldForm/FormInput.vue";
+import FormBirth from "./FieldForm/FormBirth.vue";
 
 export default {
   components: {
     FormError,
+    FormGroup,
+    FormInput,
+    FormBirth,
   },
 
   setup() {
@@ -2295,7 +2208,7 @@ export default {
 
     async handleSubumit() {
       // await this.v$.$validate();
-      const isValid = await this.v$.$validate()
+      const isValid = await this.v$.$validate();
       if (this.dataVuex && isValid) {
         this.$store.dispatch("setInfomation", { data: this.form, step: 3 });
         this.$router.push("/form3");
@@ -2474,15 +2387,7 @@ p {
     margin-bottom: 5px;
     border-bottom: 5px;
   }
-  .warning {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-    p {
-      color: #333333;
-      font-weight: 700;
-    }
-  }
+
   .dateMY {
     display: flex;
     gap: 12px;
@@ -2534,25 +2439,6 @@ p {
         font-weight: 400;
         font-size: 1.6rem;
       }
-    }
-  }
-  .education_option {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    input {
-      height: 48px;
-      width: 160px;
-      border: 1px solid #dcdcdc;
-      border-radius: 2px;
-      padding: 8px;
-    }
-    select {
-      width: 100%;
-      height: 48px;
-      border: 1px solid #dcdcdc;
-      border-radius: 2px;
-      padding: 8px;
     }
   }
   .facultyName {
