@@ -1,67 +1,37 @@
 
 <template>
-  <div class="form_group">
-    <div class="form_title">顔写真の登録</div>
-    <p class="help-text">
+  <FormGroup>
+    <template #title>顔写真の登録</template>
+    <template #infoText>
       システムの本人アイコンに使用します。あなたの顔が分かる写真を登録してください。未登録の場合、姓名の頭文字が表示されます。顔写真見本のように撮影してください。また、背景は白、スーツ着用、身だしなみルールに沿って撮影をお願いいたします。
-    </p>
-    <!-- Select or drop image with Vuejs-->
-    <div
-      v-show="form.previewImage.facePhoto"
-      class="imagePreviewWrapper"
-      :style="{ 'background-image': `url(${form.previewImage.facePhoto})` }"
-    ></div>
-    <div class="images_drop">
-      <input
-        @input="pickFile({ refEl: 'imgFace', setData: 'facePhoto' })"
-        ref="imgFace"
-        class="form-control form-control-sm"
-        id="formFileSm"
-        type="file"
-      />
+    </template>
 
-      <img src="../assets/images/upload.png" alt="" />
-      <div class="mb-3"></div>
-      <p>
-        <span>ファイルをドラッグ&ドロップ</span> <br />
-        ファイルをドロップするか、<br />
-        ファイルを参照する
-      </p>
-    </div>
+    <DropImages
+      @inputData="updateImage"
+      :isShow="form.previewImage.facePhoto"
+      :linkImage="form.previewImage.facePhoto"
+      refEl="imgFace"
+      setData="facePhoto"
+    >
+    </DropImages>
+    <!-- Select or drop image with Vuejs-->
     <form-error :errors="v$.form.previewImage.facePhoto.$errors" />
-  </div>
+  </FormGroup>
 
-  <div class="form_group">
-    <div class="form_title">本人確認書類</div>
-    <div class="text_require">
-      <p class="require">必須</p>
-      <p class="help-text">運転免許証両面もしくは住民票を添付してください。</p>
-    </div>
+  <FormGroup>
+    <template #title>本人確認書類</template>
     <!-- Select or drop image with Vuejs-->
-    <div
-      v-show="form.previewImage.photoDocument"
-      class="imagePreviewWrapper"
-      :style="{ 'background-image': `url(${form.previewImage.photoDocument})` }"
-    ></div>
-    <div class="images_drop">
-      <input
-        @input="
-          pickFile({ refEl: 'verificationDocuments', setData: 'photoDocument' })
-        "
-        ref="verificationDocuments"
-        class="form-control form-control-sm"
-        id="formFileSm"
-        type="file"
-      />
-      <img src="../assets/images/upload.png" alt="" />
-      <div class="mb-3"></div>
-      <p>
-        <span>ファイルをドラッグ&ドロップ</span> <br />
-        ファイルをドロップするか、<br />
-        ファイルを参照する
-      </p>
-    </div>
-  </div>
+    <DropImages
+      :isRequire="true"
+      @inputData="updateImage"
+      helpText="運転免許証両面もしくは住民票を添付してください"
+      :isShow="form.previewImage.photoDocument"
+      :linkImage="form.previewImage.photoDocument"
+      refEl="verificationDocuments"
+      setData="photoDocument"
+    >
+    </DropImages>
+  </FormGroup>
 
   <FormGroup>
     <template #title>基本情報登録</template>
@@ -73,6 +43,7 @@
       helpText="姓"
       placeholder="入力してください"
       v-model="form.lastnameMain"
+      :value = "form.lastnameMain"
     >
     </FormInput>
     <FormInput
@@ -107,14 +78,15 @@
       inputType="text"
       helpText="名（ローマ字）"
       placeholder="性別"
-      v-model="form.fistnameRoMain"
+      v-model="form.fistNameRoMain"
     >
     </FormInput>
     <FormInput
       inputType="radio"
-      helpText="性別"
+      mainTitle="性別"
       placeholder="入力してください"
       v-model="form.gender"
+      :valueRadio="{ value1: '男性', value2: '女性' }"
     >
     </FormInput>
 
@@ -159,91 +131,78 @@
     >
     </FormInput>
 
-    <div>
-      <label for="educationBg">学歴区分</label>
-      <br />
-      <select
-        class="form_input"
-        name=""
-        id="educationBg"
-        v-model="form.educationBg"
-      >
-        <option value="1">1</option>
-        <option value="2">2</option>
-      </select>
-    </div>
     <FormInput
+      inputType="select"
+      titleGuide="学歴区分"
+      :isRequire="false"
+      placeholder="入力してください"
+      v-model="form.educationBg"
+      width="160px"
+      :optionValue="{
+        option1: '1',
+        option2: '2',
+      }"
+    >
+    </FormInput>
+    <FormInputSearch
+      class="search"
       inputType="text"
       helpText="学校名"
       placeholder="入力してください"
       v-model="form.schoolName"
     >
+    </FormInputSearch>
+
+    <FormInput
+      inputType="text"
+      helpText="学部名"
+      placeholder="入力してください"
+      v-model="form.facultyName"
+      :isRequire="false"
+    >
     </FormInput>
-    <div class="facultyName">
-      <div>
-        <p class="title">学部名</p>
-        <input
-          class="form_input"
-          style="width: 100%; margin-top: 8px"
-          type="text"
-          v-model="form.facultyName"
-        />
-      </div>
-    </div>
 
     <!-- Add thêm ngày nhập học -->
-    <div v-if="form.isShowAddShool">
+    <template v-if="form.isShowAddShool">
       <div class="title">学歴2</div>
-      <div class="admission">
-        <div class="text_require">
-          <p class="require">必須</p>
-          <p class="help-text">入学年月日</p>
-        </div>
-        <input type="date" v-model="form.courseTime2.start" />
-      </div>
-      <div class="admission">
-        <div class="text_require">
-          <p class="require">必須</p>
-          <p class="help-text">卒業年月日</p>
-        </div>
-        <input type="date" v-model="form.courseTime2.end" />
-      </div>
+      <FormInput
+        inputType="date"
+        helpText="入学年月日"
+        placeholder="入力してください"
+        v-model="form.courseTime2.start"
+        width="160px"
+      >
+      </FormInput>
+      <FormInput
+        inputType="date"
+        helpText="卒業年月日"
+        placeholder="入力してください"
+        v-model="form.courseTime2.end"
+        width="160px"
+      >
+      </FormInput>
+      <FormInput
+        inputType="select"
+        titleGuide="学歴区分"
+        :isRequire="false"
+        placeholder="入力してください"
+        v-model="form.educationBg2"
+        width="160px"
+        :optionValue="{
+          option1: '1',
+          option2: '2',
+        }"
+      >
+      </FormInput>
 
-      <div>
-        <div>
-          <label for="educationBg2">学歴区分</label>
-          <br />
-          <select name="" id="educationBg2" v-model="form.educationBg2">
-            <option value="">1</option>
-            <option value="">2</option>
-          </select>
-        </div>
-      </div>
-      <div class="schoolName">
-        <div>
-          <div class="text_require">
-            <p class="require">必須</p>
-            <p class="help-text">学校名</p>
-          </div>
-          <input
-            class="input-search"
-            style="width: 100%"
-            type="text"
-            v-model="form.schoolName2"
-          />
-        </div>
-      </div>
-      <div class="facultyName">
-        <div>
-          <p class="title">学部名</p>
-          <input
-            style="width: 100%; margin-top: 8px"
-            type="text"
-            v-model="form.facultyName2"
-          />
-        </div>
-      </div>
-    </div>
+      <FormInput
+        inputType="text"
+        helpText="学校名"
+        placeholder="入力してください"
+        v-model="form.facultyName2"
+      >
+      </FormInput>
+    </template>
 
     <a
       v-show="!form.isShowAddShool"
@@ -253,210 +212,110 @@
       ><span>+ </span> 学歴を追加する</a
     >
   </FormGroup>
-  <div class="form_group">
-    <div class="form_title">保険年金</div>
-    <div class="basicPension">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">基礎年金番号</p>
-      </div>
-      <input
-        class="form_input"
-        type="number"
-        placeholder="入力してください"
-        name=""
-        v-model="form.basicPension"
-      />
-    </div>
-    <div class="insuranceNumber">
-      <div class="form_title">基礎年金番号</div>
 
-      <p class="title_guide">番号をお持ちの方は必ず入力してください</p>
-      <input
-        class="form_input"
-        type="number"
-        placeholder="入力してください"
-        name=""
-        v-model="form.insuranceNumber"
-      />
-    </div>
-    <div class="oldCompanyName">
-      <div class="form_title">前職会社名</div>
+  <FormGroup :isDocument="false">
+    <template #title>保険年金</template>
+    <FormInput
+      inputType="text"
+      helpText="基礎年金番号"
+      placeholder="入力してください"
+      v-model="form.basicPension"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      mainTitle="雇用保険被保険者番号"
+      titleGuide="番号をお持ちの方は必ず入力してください"
+      placeholder="入力してください"
+      v-model="form.insuranceNumber"
+      :isRequire="false"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      mainTitle="前職会社名"
+      titleGuide="雇用保険番号が不明の場合は入力をしてください"
+      placeholder="入力してください"
+      v-model="form.oldCompanyName"
+      :isRequire="false"
+    >
+    </FormInput>
 
-      <p class="title_guide">雇用保険番号が不明の場合は入力をしてください</p>
-      <input
-        class="form_input"
-        type="text"
-        placeholder="入力してください"
-        name=""
-        v-model="form.oldCompanyName"
-      />
-    </div>
-    <div style="margin-bottom: 6px">
-      <div class="form_title">資格証明書類（年金手帳）</div>
-      <p class="help-text">年金手帳の写真を添付してください</p>
-      <!-- Select or drop image with Vuejs-->
-      <div
-        v-show="form.previewImage.pensionBookPhoto"
-        class="imagePreviewWrapper"
-        :style="{
-          'background-image': `url(${form.previewImage.pensionBookPhoto})`,
-        }"
-      ></div>
-      <div class="images_drop">
-        <input
-          @input="
-            pickFile({
-              refEl: 'pensionBook',
-              setData: 'pensionBookPhoto',
-            })
-          "
-          ref="pensionBook"
-          class="form-control form-control-sm"
-          id="formFileSm"
-          type="file"
-        />
-        <img src="../assets/images/upload.png" alt="" />
-        <div class="mb-3"></div>
-        <p>
-          <span>ファイルをドラッグ&ドロップ</span> <br />
-          ファイルをドロップするか、<br />
-          ファイルを参照する
-        </p>
-      </div>
-    </div>
-    <div style="margin-bottom: 6px">
-      <div class="form_title">資格署名書類（雇用保険被保険者証）</div>
-      <p class="help-text">雇用保険被保険者証の写真を添付してください</p>
-      <!-- Select or drop image with Vuejs-->
-      <div
-        v-show="form.previewImage.identificationPhoto"
-        class="imagePreviewWrapper"
-        :style="{
-          'background-image': `url(${form.previewImage.identificationPhoto})`,
-        }"
-      ></div>
-      <div class="images_drop">
-        <input
-          @input="
-            pickFile({
-              refEl: 'identification',
-              setData: 'identificationPhoto',
-            })
-          "
-          ref="identification"
-          class="form-control form-control-sm"
-          id="formFileSm"
-          type="file"
-        />
-        <img src="../assets/images/upload.png" alt="" />
-        <div class="mb-3"></div>
-        <p>
-          <span>ファイルをドラッグ&ドロップ</span> <br />
-          ファイルをドロップするか、<br />
-          ファイルを参照する
-        </p>
-      </div>
-    </div>
-    <div class="radio_button" style="margin-bottom: 0">
-      <div class="radio_button-1">
-        <input type="radio" id="male" value="希望する" v-model="form.picked" />
-        <label for="希望する">希望する</label>
-      </div>
-      <div class="radio_button-2">
-        <input
-          type="radio"
-          id="female"
-          value="利用しない"
-          v-model="form.picked"
-        />
-        <label for="利用しない">利用しない</label>
-      </div>
-    </div>
-  </div>
-  <div class="form_group">
-    <div class="form_title">給与振込口座</div>
+    <DropImages
+      @inputData="updateImage"
+      mainTitle="資格証明書類（年金手帳）"
+      titleGuide="年金手帳の写真を添付してください"
+      :isShow="form.previewImage.pensionBookPhoto"
+      :linkImage="form.previewImage.pensionBookPhoto"
+      refEl="pensionBook"
+      setData="pensionBookPhoto"
+    >
+    </DropImages>
+    <DropImages
+      @inputData="updateImage"
+      mainTitle="資格署名書類（雇用保険被保険者証）"
+      titleGuide="雇用保険被保険者証の写真を添付してください"
+      :isShow="form.previewImage.identificationPhoto"
+      :linkImage="form.previewImage.identificationPhoto"
+      refEl="identification"
+      setData="identificationPhoto"
+    >
+    </DropImages>
+    <FormInput
+      inputType="radio"
+      mainTitle="資格署名書類（雇用保険被保険者証）"
+      placeholder="入力してください"
+      v-model="form.picked"
+      :valueRadio="{ value1: '希望する', value2: '利用しない' }"
+    >
+    </FormInput>
+  </FormGroup>
 
-    <div class="search">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">金融機関をフリーワードで検索</p>
-      </div>
-      <p style="margin-bottom: 8px">
-        ｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます
-      </p>
-      <input
-        class="input-search"
-        type="text"
-        style="width: 100%"
-        placeholder="フリーワードで検索できます"
-        v-model="form.searchForFinancial"
-      />
-    </div>
+  <FormGroup :isDocument="false">
+    <template #title>給与振込口座</template>
+    <FormInputSearch
+      class="search"
+      inputType="text"
+      helpText="基礎年金番号"
+      placeholder="入力してください"
+      titleGuide="｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます"
+      v-model="form.searchForFinancial"
+    >
+    </FormInputSearch>
+    <FormInputSearch
+      class="search"
+      inputType="text"
+      helpText="基礎年金番号"
+      placeholder="入力してください"
+      titleGuide="｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます"
+      v-model="form.searchForFinancial1"
+      :isActive="form.searchForFinancial"
+    >
+    </FormInputSearch>
 
-    <div class="search">
-      <div class="text_require">
-        <p class="require" :class="{ noActive: !form.searchForFinancial }">
-          必須
-        </p>
-        <p
-          class="help-text"
-          :class="{ filed_noActive: !form.searchForFinancial }"
-        >
-          支店名をフリーワードで検索
-        </p>
-      </div>
-      <p style="margin-bottom: 8px" class="filed_noActive">
-        ｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます
-      </p>
-      <input
-        class="input-search filed_noActive"
-        type="text"
-        style="width: 100%"
-        placeholder="フリーワードで検索できます"
-        v-model="form.searchForFinancial1"
-      />
-    </div>
+    <div class="help-text" style="margin-top: 12px">口座預金科目</div>
+    <div class="help-text" style="margin-bottom;:12px">普通</div>
 
-    <div class="form_title" style="margin-top: 12px">口座預金科目</div>
-    <div class="form_title" style="margin-bottom;:12px">普通</div>
-    <div class="accountNumber">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">口座番号（半角）</p>
-      </div>
-      <p style="margin-bottom: 8px">
-        ｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます
-      </p>
-      <input
-        class="form_input"
-        type="number"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.accountNumber"
-      />
-    </div>
-    <div class="accountName">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">口座名義（カタカナ）</p>
-      </div>
-      <p>本人名義に限ります</p>
-      <p style="margin-bottom: 8px">
-        ｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます
-      </p>
-      <input
-        class="form_input"
-        type="number"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.accountName"
-      />
-    </div>
-  </div>
+    <FormInput
+      inputType="text"
+      helpText="口座番号（半角）"
+      placeholder="入力してください"
+      v-model="form.accountNumber"
+    >
+    </FormInput>
 
-  <div class="form_group">
-    <div class="form_title">在留カード（外国籍の方はご記入ください）</div>
+    <FormInput
+      inputType="text"
+      helpText="口座名義（カタカナ）"
+      placeholder="入力してください"
+      v-model="form.accountName"
+    >
+    </FormInput>
+  </FormGroup>
+
+  <FormGroup>
+    <template #title>在留カード（外国籍の方はご記入ください） </template>
+    <!-- last -->
     <div class="white_content">
       <label class="label-checkbox" for="foreigner"
         ><input
@@ -479,267 +338,135 @@
       </label>
     </div>
 
-    <div class="lastNameForeRo">
-      <div class="text_require">
-        <p class="require" :class="[{ noActive: !form.isForeigner }]">必須</p>
-        <p class="help-text" :class="{ filed_noActive: !form.isForeigner }">
-          口座番号（半角）
-        </p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.lastNameForeRo"
-        :disabled="!form.isForeigner"
-      />
-    </div>
-    <div class="nameFore">
-      <div class="text_require">
-        <p class="require" :class="[{ noActive: !form.isForeigner }]">必須</p>
-        <p class="help-text" :class="{ filed_noActive: !form.isForeigner }">
-          口座番号（半角）
-        </p>
-      </div>
-      <input
-        class="form_input"
-        type="number"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.nameFore"
-        :disabled="!form.isForeigner"
-      />
-    </div>
-    <div class="lastNameForeKana">
-      <div class="text_require">
-        <p class="require" :class="[{ noActive: !form.isForeigner }]">必須</p>
-        <p class="help-text" :class="{ filed_noActive: !form.isForeigner }">
-          姓（カナ）
-        </p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.lastNameForeKana"
-        :disabled="!form.isForeigner"
-      />
-    </div>
-    <div class="nameForeKana">
-      <div class="text_require">
-        <p class="require" :class="[{ noActive: !form.isForeigner }]">必須</p>
-        <p class="help-text" :class="{ filed_noActive: !form.isForeigner }">
-          口座番号（半角）
-        </p>
-      </div>
-      <input
-        class="form_input"
-        type="number"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.nameForeKana"
-        :disabled="!form.isForeigner"
-      />
-    </div>
-    <div class="nationality">
-      <div class="text_require">
-        <p class="require" :class="[{ noActive: !form.isForeigner }]">必須</p>
-        <p class="help-text" :class="{ filed_noActive: !form.isForeigner }">
-          国籍
-        </p>
-      </div>
-      <input
-        class="form_input"
-        type="number"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.nationality"
-        :disabled="!form.isForeigner"
-      />
-    </div>
-    <div class="residence">
-      <div class="field-name" :class="{ filed_noActive: !form.isForeigner }">
-        在留資格
-      </div>
-      <input
-        class="form_input"
-        type="number"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.residence"
-        :disabled="!form.isForeigner"
-      />
-    </div>
-    <div class="residenceTime">
-      <div class="field-name" :class="{ filed_noActive: !form.isForeigner }">
-        在留期間（満了日）
-      </div>
-      <input
-        type="date"
-        :class="{ filed_noActive: !form.isForeigner }"
-        v-model="form.residenceTime"
-        :disabled="!form.isForeigner"
-        style="
-          height: 48px;
-          width: 160px;
-          border: 1px solid #dcdcdc;
-          border-radius: 2px;
-          padding: 8px;
-        "
-      />
-    </div>
-    <div class="licensesBeyond">
-      <div class="field-name" :class="{ filed_noActive: !form.isForeigner }">
-        資格外活動許可
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.licensesBeyond"
-        :disabled="!form.isForeigner"
-      />
-    </div>
-    <div class="typeofWork">
-      <div class="field-name" :class="{ filed_noActive: !form.isForeigner }">
-        就労区分
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.typeofWork"
-        :disabled="!form.isForeigner"
-      />
-    </div>
-    <div class="residenceCardnumber">
-      <div class="text_require">
-        <p class="require" :class="[{ noActive: !form.isForeigner }]">必須</p>
-        <p class="help-text" :class="{ filed_noActive: !form.isForeigner }">
-          在留カード番号（半角）
-        </p>
-      </div>
-      <input
-        class="form_input"
-        type="number"
-        style="width: 100%"
-        placeholder="入力してください"
-        v-model="form.residenceCardnumber"
-        :disabled="!form.isForeigner"
-      />
-    </div>
-    <div style="margin-bottom: 6px" class="residentCardPhoto-font">
-      <div class="form_title" :class="{ filed_noActive: !form.isForeigner }">
-        在留カードの写真（表）
-      </div>
-      <p class="help-text" :class="{ filed_noActive: !form.isForeigner }">
-        カードの表の写真を添付してください。
-      </p>
-      <!-- Select or drop image with Vuejs-->
-      <div
-        v-show="form.previewImage.residentCardPhotoFont"
-        class="imagePreviewWrapper"
-        :style="{
-          'background-image': `url(${form.previewImage.residentCardPhotoFont})`,
-        }"
-      ></div>
-      <div class="images_drop">
-        <input
-          @input="
-            pickFile({
-              refEl: 'imgResidentFont',
-              setData: 'residentCardPhotoFont',
-            })
-          "
-          ref="imgResidentFont"
-          class="form-control form-control-sm"
-          id="formFileSm"
-          type="file"
-          :disabled="!form.isForeigner"
-        />
+    <FormInput
+      inputType="text"
+      helpText="姓（ローマ字）"
+      placeholder="入力してください"
+      v-model="form.lastNameForeRo"
+      :isForeigner="!form.isForeigner"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="名（ローマ字）"
+      placeholder="入力してください"
+      v-model="form.nameFore"
+      :isForeigner="!form.isForeigner"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="姓（カナ）"
+      placeholder="入力してください"
+      :isForeigner="!form.isForeigner"
+      v-model="form.lastNameForeKana"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="名（カナ）"
+      placeholder="入力してください"
+      :isForeigner="!form.isForeigner"
+      v-model="form.nameForeKana"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="国籍"
+      placeholder="入力してください"
+      :isForeigner="!form.isForeigner"
+      v-model="form.nationality"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="在留資格"
+      placeholder="入力してください"
+      :isForeigner="!form.isForeigner"
+      :isRequire="false"
+      v-model="form.residence"
+    >
+    </FormInput>
 
-        <img src="../assets/images/upload.png" alt="" />
-        <div class="mb-3"></div>
-        <p>
-          <span>ファイルをドラッグ&ドロップ</span> <br />
-          ファイルをドロップするか、<br />
-          ファイルを参照する
-        </p>
-      </div>
-    </div>
+    <FormInput
+      inputType="text"
+      helpText="在留期間（満了日）"
+      placeholder="入力してください"
+      :isForeigner="!form.isForeigner"
+      :isRequire="false"
+      v-model="form.residenceTime"
+    >
+    </FormInput>
 
-    <div style="margin-bottom: 6px" class="residentCardPhoto-back">
-      <div class="form_title" :class="{ filed_noActive: !form.isForeigner }">
-        在留カードの写真（裏）
-      </div>
-      <p class="help-text" :class="{ filed_noActive: !form.isForeigner }">
-        カードの裏の写真を添付してください。
-      </p>
-      <!-- Select or drop image with Vuejs-->
-      <div
-        v-show="form.previewImage.residentCardPhotoBack"
-        class="imagePreviewWrapper"
-        :style="{
-          'background-image': `url(${form.previewImage.residentCardPhotoBack})`,
-        }"
-      ></div>
-      <div class="images_drop">
-        <input
-          @input="
-            pickFile({
-              refEl: 'imgResidentBack',
-              setData: 'residentCardPhotoBack',
-            })
-          "
-          ref="imgResidentBack"
-          class="form-control form-control-sm"
-          id="formFileSm"
-          type="file"
-          :disabled="!form.isForeigner"
-        />
+    <FormInput
+      inputType="text"
+      helpText="資格外活動許可"
+      placeholder="入力してください"
+      :isForeigner="!form.isForeigner"
+      :isRequire="false"
+      v-model="form.licensesBeyond"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="就労区分"
+      placeholder="入力してください"
+      :isForeigner="!form.isForeigner"
+      :isRequire="false"
+      v-model="form.typeofWork"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="在留カード番号（半角）"
+      placeholder="入力してください"
+      :isForeigner="!form.isForeigner"
+      :isRequire="false"
+      v-model="form.residenceCardNumber"
+    >
+    </FormInput>
+    <DropImages
+      @inputData="updateImage"
+      mainTitle="在留カードの写真（表）"
+      titleGuide="カードの表の写真を添付してください。"
+      :isShow="form.previewImage.residentCardPhotoFont"
+      :linkImage="form.previewImage.residentCardPhotoFont"
+      refEl="imgResidentFont"
+      setData="residentCardPhotoFont"
+      :isForeigner="!form.isForeigner"
+    >
+    </DropImages>
 
-        <img src="../assets/images/upload.png" alt="" />
-        <div class="mb-3"></div>
-        <p>
-          <span>ファイルをドラッグ&ドロップ</span> <br />
-          ファイルをドロップするか、<br />
-          ファイルを参照する
-        </p>
-      </div>
-    </div>
-  </div>
+    <DropImages
+      @inputData="updateImage"
+      mainTitle="在留カードの写真（裏）"
+      titleGuide="カードの裏の写真を添付してください。"
+      :isShow="form.previewImage.residentCardPhotoBack"
+      :linkImage="form.previewImage.residentCardPhotoBack"
+      refEl="imgResidentBack"
+      setData="residentCardPhotoBack"
+      :isForeigner="!form.isForeigner"
+    >
+    </DropImages>
+  </FormGroup>
 
-  <div class="form_group">
-    <div class="form_title">現住所を登録</div>
+  <FormGroup :isDocument="false">
+    <template #title> 現住所を登録 </template>
+    <FormInput
+      inputType="text"
+      helpText="世帯主区分"
+      placeholder="入力してください"
+      v-model="form.householdDivision"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="住居区分"
+      placeholder="入力してください"
+      v-model="form.housingClassification"
+    >
+    </FormInput>
 
-    <div class="householdDivision">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">世帯主区分</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.householdDivision"
-      />
-    </div>
-    <div class="housingClassification">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">住居区分</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.housingClassification"
-      />
-    </div>
     <div class="zipCode">
       <div class="text_require">
         <p class="require">必須</p>
@@ -767,99 +494,60 @@
         <button>住所取得</button>
       </div>
     </div>
-    <div class="provinceRela">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">都道府県</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.provinceRela"
-      />
-      <form-error :errors="v$.form.provinceRela.$errors" />
-    </div>
-    <div class="autonomousCityRela">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">市区町村</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.autonomousCityRela"
-      />
-      <form-error :errors="v$.form.autonomousCityRela.$errors" />
-    </div>
-    <div class="addressRela">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">番地</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.addressRela"
-      />
+    <FormInput
+      inputType="text"
+      helpText="都道府県"
+      placeholder="入力してください"
+      v-model="form.provinceRela"
+    >
+    </FormInput>
+    <form-error :errors="v$.form.provinceRela.$errors" />
+    <FormInput
+      inputType="text"
+      helpText="市区町村"
+      placeholder="入力してください"
+      v-model="form.autonomousCityRela"
+    >
+    </FormInput>
+    <form-error :errors="v$.form.autonomousCityRela.$errors" />
+    <FormInput
+      inputType="text"
+      helpText="番地"
+      placeholder="入力してください"
+      v-model="form.addressRela"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="建物名称・部屋番号"
+      placeholder="入力してください"
+      v-model="form.addressRela"
+      :isRequire="false"
+    >
       <form-error :errors="v$.form.addressRela.$errors" />
-    </div>
-    <div>
-      <div class="field-name" style="font-weight: 400">建物名称・部屋番号</div>
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="電話番号（半角）"
+      placeholder="入力してください"
+      :require2="true"
+      titleGuide="自宅電話番号が無い場合、携帯電話番号のみ登録してください。"
+      v-model="form.phoneNumberRela"
+    >
+    </FormInput>
+    <form-error :errors="v$.form.phoneNumberRela.$errors" />
+    <FormInput
+      inputType="text"
+      helpText="携帯電話番号（半角）"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.mobilePhoneNumber"
+    >
+    </FormInput>
+  </FormGroup>
 
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.buildingNameroomNumberRela"
-      />
-      <form-error :errors="v$.form.buildingNameroomNumberRela.$errors" />
-    </div>
-
-    <div class="phoneNumber">
-      <div class="text_require">
-        <div class="requireother">
-          <div class="requireother_outline">
-            <p>どちらか</p>
-          </div>
-          <p class="require">必須</p>
-        </div>
-        <p class="help-text">電話番号（半角）</p>
-      </div>
-      <p style="margin-bottom: 8px; margin-top: -3px">
-        自宅電話番号が無い場合、携帯電話番号のみ登録してください。
-      </p>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.phoneNumberRela"
-      />
-      <form-error :errors="v$.form.phoneNumberRela.$errors" />
-    </div>
-    <div class="mobilePhoneNumber">
-      <div class="text_require">
-        <div class="requireother">
-          <div class="requireother_outline">
-            <p>どちらか</p>
-          </div>
-          <p class="require">必須</p>
-        </div>
-        <p class="help-text">携帯電話番号（半角）</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.mobilePhoneNumber"
-      />
-      <div href="#" class="extensionLink"><span>+ </span> 学歴を追加する</div>
-    </div>
-  </div>
-  <div class="form_group">
-    <div class="form_title">住民票記載の住所を登録</div>
+  <FormGroup>
+    <template #title>住民票記載の住所を登録</template>
     <div class="white_content">
       <input
         type="checkbox"
@@ -896,126 +584,89 @@
       </div>
     </div>
 
-    <div class="provinceArc">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">都道府県</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.provinceArc"
-      />
-    </div>
-    <div class="autonomousCityArc">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">市区町村</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.autonomousCityArc"
-      />
-    </div>
-    <div class="addressArc">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">番地</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.addressArc"
-      />
-    </div>
+    <FormInput
+      inputType="text"
+      helpText="都道府県"
+      placeholder="入力してください"
+      v-model="form.provinceArc"
+    >
+    </FormInput>
 
-    <div>
-      <div class="field-name" style="font-weight: 400">建物名称・部屋番号</div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.buildingNameroomNumberArc"
-      />
-    </div>
-  </div>
+    <FormInput
+      inputType="text"
+      helpText="市区町村"
+      placeholder="入力してください"
+      v-model="form.autonomousCityArc"
+    >
+    </FormInput>
+
+    <FormInput
+      inputType="text"
+      helpText="番地"
+      placeholder="入力してください"
+      v-model="form.addressArc"
+    >
+    </FormInput>
+
+    <FormInput
+      inputType="text"
+      helpText="建物名称・部屋番号"
+      placeholder="入力してください"
+      v-model="form.buildingNameroomNumberArc"
+      :isRequire="false"
+    >
+    </FormInput>
+  </FormGroup>
   <!-- 緊急連絡先を登録 đăng ký liên hệ khẩn cấp -->
-  <div class="form_group">
-    <div class="form_title">緊急連絡先を登録</div>
-    <p style="margin-bottom: 5px">
+  <FormGroup>
+    <template #title>緊急連絡先を登録</template>
+    <template #infoText>
       記入優先順位 <br />
       ①一親等：実父母、義父母、別居の兄弟姉妹、配偶者、子<br />
       ②一親等の者の勤務先<br />
       ③二親等：別居の実祖父母、義祖父母<br />
       ④三親等：別居の叔父叔母、甥、姪。配偶者の兄弟姉妹<br />
       ⑤知人、友人等
-    </p>
-    <div class="help-text">緊急連絡先1</div>
+    </template>
 
-    <div class="lastnameRelationship">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">関係姓</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.lastnameRelationship"
-      />
-    </div>
-    <div class="lastNameRela">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">姓</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.lastNameRela"
-      />
-    </div>
-    <div class="fistNameRela">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">名</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.fistNameRela"
-      />
-    </div>
-    <div class="surename">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">セイ</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.surename"
-      />
-    </div>
-    <div class="nameMei">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">メイ</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.nameMei"
-      />
-    </div>
+    <p style="margin: 10px 0px">緊急連絡先1</p>
+
+    <FormInput
+      inputType="text"
+      helpText="関係姓"
+      placeholder="入力してください"
+      v-model="form.lastnameRelationship"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="姓"
+      placeholder="入力してください"
+      v-model="form.lastNameRela"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="名"
+      placeholder="入力してください"
+      v-model="form.fistNameRela"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="セイ"
+      placeholder="入力してください"
+      v-model="form.surename"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="メイ"
+      placeholder="入力してください"
+      v-model="form.nameMei"
+    >
+    </FormInput>
+
     <div class="zipCode">
       <div class="text_require">
         <p class="require">必須</p>
@@ -1043,190 +694,125 @@
         <button>住所取得</button>
       </div>
     </div>
-    <div class="province">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">都道府県</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.province"
-      />
-    </div>
-    <div class="autonomousCity">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">市区町村</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.autonomousCity"
-      />
-    </div>
-    <div class="address">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">番地</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.address"
-      />
-    </div>
-    <div>
-      <div class="field-name" style="font-weight: 400">建物名称・部屋番号</div>
+    <FormInput
+      inputType="text"
+      helpText="都道府県"
+      placeholder="入力してください"
+      v-model="form.province"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="市区町村"
+      placeholder="入力してください"
+      v-model="form.autonomousCity"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="番地"
+      placeholder="入力してください"
+      v-model="form.address"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="番地"
+      placeholder="入力してください"
+      v-model="form.address"
+    >
+    </FormInput>
 
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.buildingNameroomNumber"
-      />
-    </div>
+    <FormInput
+      inputType="text"
+      helpText="建物名称・部屋番号"
+      placeholder="入力してください"
+      v-model="form.buildingNameroomNumber"
+      :isRequire="false"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="電話番号（半角）"
+      placeholder="入力してください"
+      :require2="true"
+      titleGuide="自宅電話番号が無い場合、携帯電話番号のみ登録してください。"
+      v-model="form.phoneNumber"
+    >
+    </FormInput>
+    <form-error :errors="v$.form.phoneNumber.$errors" />
 
-    <div class="phoneNumber">
-      <div class="text_require">
-        <div class="requireother">
-          <div class="requireother_outline">
-            <p>どちらか</p>
-          </div>
-          <p class="require">必須</p>
-        </div>
-        <p class="help-text">電話番号（半角）</p>
-      </div>
-      <p style="margin-bottom: 8px; margin-top: -3px">
-        自宅電話番号が無い場合、携帯電話番号のみ登録してください。
-      </p>
-      <input
-        class="form_input"
-        type="number"
-        style="width: 100%"
-        v-model="form.phoneNumber"
-      />
-      <form-error :errors="v$.form.phoneNumber.$errors" />
-    </div>
-
-    <div class="mobilePhoneNumber">
-      <div class="text_require">
-        <div class="requireother">
-          <div class="requireother_outline">
-            <p>どちらか</p>
-          </div>
-          <p class="require">必須</p>
-        </div>
-        <p class="help-text">携帯電話番号（半角）</p>
-      </div>
-      <input
-        class="form_input"
-        type="number"
-        style="width: 100%"
-        v-model="form.mobilePhoneNumberRela"
-      />
-      <form-error :errors="v$.form.mobilePhoneNumberRela.$errors" />
-    </div>
-  </div>
+    <FormInput
+      inputType="text"
+      helpText="携帯電話番号（半角）"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.mobilePhoneNumberRela"
+    >
+    </FormInput>
+    <form-error :errors="v$.form.mobilePhoneNumberRela.$errors" />
+  </FormGroup>
   <!-- 家族情報を登録 đăng ký thông tin gia đình -->
-  <div class="form_group">
-    <div class="form_title">家族情報を登録</div>
-    <p style="margin-bottom: 5px">
+  <FormGroup :isDocument="false">
+    <template #title> 家族情報を登録 </template>
+    <template #infoText>
       一等親以内は同居/別居に関わらず記入<br />
       二親等以上は同居、もしくは扶養義務がある場合に限り記載
-    </p>
+    </template>
     <div class="help-text">家族情報1</div>
+    <FormInput
+      inputType="text"
+      helpText="続柄"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.relationship"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="姓"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.lastNameRela2"
+    >
+    </FormInput>
 
-    <div class="relationship">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">続柄</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.relationship"
-      />
-    </div>
-    <div class="lastNameRela2">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">姓</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.lastNameRela2"
-      />
-    </div>
-    <div class="fistNameRela2">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">名</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.fistNameRela2"
-      />
-    </div>
-    <div class="surename2">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">セイ</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.surename2"
-      />
-    </div>
-    <div class="nameMei2">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">メイ</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.nameMei2"
-      />
-    </div>
-    <div class="gender">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">性別</p>
-      </div>
+    <FormInput
+      inputType="text"
+      helpText="名"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.fistNameRela2"
+    >
+    </FormInput>
 
-      <div class="radio_button">
-        <div class="radio_button-1">
-          <input
-            type="radio"
-            id="male2"
-            value="Male"
-            v-model="form.genderRela"
-          />
-          <label for="male2">男性</label>
-        </div>
-        <div class="radio_button-2">
-          <input
-            type="radio"
-            id="female2"
-            value="Female"
-            v-model="form.genderRela"
-          />
-          <label for="female2">女性</label>
-        </div>
-      </div>
-    </div>
+    <FormInput
+      inputType="text"
+      helpText="セイ"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.surename2"
+    >
+    </FormInput>
+
+    <FormInput
+      inputType="text"
+      helpText="メイ"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.nameMei2"
+    >
+    </FormInput>
+
+    <FormInput
+      inputType="radio"
+      mainTitle="性別"
+      placeholder="入力してください"
+      v-model="form.genderRela"
+      :valueRadio="{ value1: '男性', value2: '女性' }"
+    >
+    </FormInput>
+
     <div class="birthday">
       <div class="text_require">
         <p class="require">必須</p>
@@ -1295,100 +881,91 @@
         <button>住所取得</button>
       </div>
     </div>
-    <div class="provinceRela2">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">都道府県</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.provinceRela2"
-      />
-    </div>
-    <div class="autonomousCity2">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">市区町村</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.autonomousCity2"
-      />
-    </div>
-    <div class="addressRela2">
-      <div class="text_require">
-        <p class="require">必須</p>
-        <p class="help-text">番地</p>
-      </div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.addressRela2"
-      />
-    </div>
 
-    <div>
-      <div class="field-name" style="font-weight: 400">建物名称・部屋番号</div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.buildingNameroomNumber2"
-      />
-    </div>
+    <FormInput
+      inputType="text"
+      helpText="都道府県"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.provinceRela2"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="市区町村"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.autonomousCity2"
+    >
+    </FormInput>
 
-    <div>
-      <div class="field-name" style="font-weight: 400">勤務先・学校名</div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.workOrSchoolName"
-      />
-    </div>
-    <div>
-      <div class="field-name" style="font-weight: 400">職業区分</div>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.occupationClassification"
-      />
-    </div>
-    <div>
-      <div class="field-name" style="font-weight: 400">
-        職業区分でその他を選択の理由
-      </div>
+    <FormInput
+      inputType="text"
+      helpText="番地"
+      placeholder="入力してください"
+      :require2="true"
+      v-model="form.addressRela2"
+    >
+    </FormInput>
 
-      <p style="margin-bottom: 5px">
-        その他を選択した方は、詳細内容を入力してください。学生を選択した方は、大学<br />
-        ○年生など、具体的に入力をお願いいたします。
-      </p>
-      <input
-        class="form_input"
-        type="text"
-        style="width: 100%"
-        v-model="form.reasonsChoseJob"
-      />
-    </div>
-    <div>
-      <div class="field-name" style="font-weight: 400">健康保険扶養区分</div>
-      <input
-        class="form_input"
-        type="text"
-        placeholder="選択してください"
-        style="width: 100%"
-        v-model="form.healthInsuranceClassification"
-      />
-    </div>
+    <FormInput
+      inputType="text"
+      helpText="建物名称・部屋番号"
+      placeholder="入力してください"
+      v-model="form.buildingNameRoomNumber2"
+      :isRequire="false"
+    >
+    </FormInput>
 
-    <a href="" class="extensionLink"><span>+ </span> 学歴を追加する</a>
-  </div>
+    <FormInput
+      inputType="text"
+      helpText="建物名称・部屋番号"
+      placeholder="入力してください"
+      v-model="form.workOrSchoolName"
+      :isRequire="false"
+    >
+    </FormInput>
+
+    <FormInput
+      inputType="text"
+      helpText="建物名称・部屋番号"
+      placeholder="入力してください"
+      v-model="form.occupationClassification"
+      :isRequire="false"
+    >
+    </FormInput>
+
+    <FormInput
+      inputType="text"
+      mainTitle="職業区分でその他を選択の理由"
+      titleGuide=" その他を選択した方は、詳細内容を入力してください。学生を選択した方は、大学<br />
+        ○年生など、具体的に入力をお願いいたします。"
+      placeholder="入力してください"
+      v-model="form.reasonsChoseJob"
+      :isRequire="false"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="健康保険扶養区分"
+      placeholder="入力してください"
+      v-model="form.healthInsuranceClassification"
+      :isRequire="false"
+    >
+    </FormInput>
+    <FormInput
+      inputType="text"
+      helpText="健康保険扶養区分"
+      placeholder="入力してください"
+      v-model="form.annualIncome"
+      :isRequire="false"
+      :width="'161px'"
+    >
+    </FormInput>
+    <a href="" @click.prevent="" class="extensionLink"
+      ><span>+ </span> 学歴を追加する</a
+    >
+  </FormGroup>
   <div class="form_group">
     <div class="form_title">通勤ルート</div>
     <p class="help-text">
@@ -2022,6 +1599,8 @@ import FormError from "./FormError.vue";
 import FormGroup from "./FieldForm/FormGroup.vue";
 import FormInput from "./FieldForm/FormInput.vue";
 import FormBirth from "./FieldForm/FormBirth.vue";
+import DropImages from "./FieldForm/DropImages.vue";
+import FormInputSearch from "./FieldForm/FormInputSearch.vue";
 
 export default {
   components: {
@@ -2029,6 +1608,8 @@ export default {
     FormGroup,
     FormInput,
     FormBirth,
+    DropImages,
+    FormInputSearch,
   },
 
   setup() {
@@ -2058,7 +1639,7 @@ export default {
         seiMain: "",
         meiMain: "",
         lastnameRoMain: "",
-        fistnameRoMain: "",
+        fistNameRoMain: "",
         companyName: "",
         picked: [],
         searchForFinancial: null,
@@ -2156,7 +1737,7 @@ export default {
         provinceRela2: "",
         autonomousCity2: "",
         addressRela2: "",
-        buildingNameroomNumber2: "",
+        buildingNameRoomNumber2: "",
         workOrSchoolName: "",
         occupationClassification: "",
         reasonsChoseJob: "",
@@ -2186,7 +1767,6 @@ export default {
         phoneNumber: { required },
         autonomousCityRela: { required },
         addressRela: { required },
-        buildingNameroomNumberRela: { required },
         phoneNumberRela: { required },
         mobilePhoneNumberRela: { required },
       },
@@ -2195,20 +1775,26 @@ export default {
 
   methods: {
     pickFile(payload) {
+      //get ref
       let input = this.$refs[payload.refEl];
       let file = input.files;
       if (file && file[0]) {
         let reader = new FileReader();
         reader.onload = (e) => {
+          // add link to data
           this.form.previewImage[payload.setData] = e.target.result;
         };
         reader.readAsDataURL(file[0]);
       }
     },
 
+    updateImage(data) {
+      const curRefImage = data.setData;
+      this.form.previewImage[curRefImage] = data.image;
+    },
     async handleSubumit() {
       // await this.v$.$validate();
-      const isValid = await this.v$.$validate();
+      const isValid = true;
       if (this.dataVuex && isValid) {
         this.$store.dispatch("setInfomation", { data: this.form, step: 3 });
         this.$router.push("/form3");
@@ -2291,6 +1877,9 @@ p {
   .title_guide {
     margin-bottom: 8px;
   }
+  .main_title {
+    margin-bottom: 4px;
+  }
   .routes {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -2302,7 +1891,6 @@ p {
   }
   .images_drop {
     position: relative;
-    margin-top: 20px;
     text-align: center;
     background-color: #ffffff;
     padding: 8px;
