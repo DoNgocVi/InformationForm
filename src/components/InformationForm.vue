@@ -100,6 +100,8 @@ export default {
     const year = d.getFullYear();
     const dmy = `${day}/${month}/${year}`;
     this.DMY = dmy;
+    const abc = this.$route.params
+    console.log(abc);
   },
 };
 </script> 

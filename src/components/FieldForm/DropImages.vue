@@ -4,15 +4,27 @@
       <p v-if="isRequire" class="require">必須</p>
       <p class="help-text">{{ helpText }}</p>
     </div>
-    <div v-if="mainTitle" :class="{filed_noActive: isForeigner}" class="main_title">{{ mainTitle }}</div>
-    <p v-if="titleGuide" :class="{filed_noActive: isForeigner}" class="title_guide">{{ titleGuide }}</p>
+    <div
+      v-if="mainTitle"
+      :class="{ filed_noActive: isForeigner }"
+      class="main_title"
+    >
+      {{ mainTitle }}
+    </div>
+    <p
+      v-if="titleGuide"
+      :class="{ filed_noActive: isForeigner }"
+      class="title_guide"
+    >
+      {{ titleGuide }}
+    </p>
     <div class="drop_images">
       <div
-        v-show="isShow"
+        v-show="linkImage"
         class="imagePreviewWrapper"
         :style="{ 'background-image': `url(${linkImage})` }"
       ></div>
-      <div class="images_drop" :class="{ 'mt-5': linkImage }">
+      <div v-if="!isDisable" class="images_drop" :class="{ 'mt-5': linkImage }">
         <input
           @input="pickFile({ refEl, setData })"
           :ref="refEl"
@@ -36,11 +48,8 @@
 <script>
 export default {
   props: {
-    isShow: {
-      default: false,
-    },
     linkImage: {
-      default: "",
+      default: null,
     },
     refEl: {
       default: "",
@@ -60,9 +69,12 @@ export default {
     isRequire: {
       default: false,
     },
-    isForeigner:{
-      default: false
-    }
+    isForeigner: {
+      default: false,
+    },
+    isDisable: {
+      default: false,
+    },
   },
   methods: {
     pickFile(payload) {
@@ -85,4 +97,7 @@ export default {
 };
 </script>
 <style scoped>
+.main_title {
+  font-weight: 700;
+}
 </style>

@@ -8,10 +8,10 @@ const routes = [
     component: InformationForm,
     children: [
       {
-        path: "/form1",
+        path: "/",
         name: "FistForm",
         component: () => import("../components/FistForm.vue"),
-        alias: "/",
+        alias: "/form1",
       },
       {
         path: "form2",

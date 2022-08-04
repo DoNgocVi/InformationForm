@@ -20,23 +20,31 @@
         {{ helpText }}
       </p>
     </div>
+    <div v-if="textImportant" class="text-important">
+      ※その他を選択した場合は、必ず理由を入力してください
+    </div>
     <p v-if="titleGuide" class="title_guide">{{ titleGuide }}</p>
-    <input
-      :style="{ width: width }"
-      style="position: relative"
-      v-if="inputType === 'text' || inputType === 'date'"
-      :class="{ form_input: !isSearch, 'input-search': isSearch }"
-      :type="inputType"
-      :placeholder="placeholder"
-      :disabled="isForeigner"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-    />
+    <div class="flex">
+      <input
+        :style="{ width: width }"
+        v-if="
+          inputType === 'text' || inputType === 'date' || inputType === 'number'
+        "
+        :class="{ form_input: !isSearch, 'input-search': isSearch }"
+        :type="inputType"
+        :placeholder="placeholder"
+        :disabled="isForeigner || isDisable"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
+      />
+      <p class="unit" v-if="unit">{{ unit }}</p>
+    </div>
 
     <div v-if="inputType === 'radio'" class="radio_button">
       <div class="radio_button-1">
         <input
           type="radio"
+          :disabled="isDisable"
           :id="valueRadio.value1"
           :value="valueRadio.value1"
           @input="$emit('update:modelValue', $event.target.value)"
@@ -47,6 +55,7 @@
       <div class="radio_button-2">
         <input
           type="radio"
+          :disabled="isDisable"
           :id="valueRadio.value2"
           :value="valueRadio.value2"
           v-model="picked"
@@ -83,8 +92,7 @@ export default {
     modelValue: {
       type: String,
     },
-    value: {
-    },
+    value: {},
     width: {
       default: 528,
     },
@@ -125,11 +133,35 @@ export default {
         option2: "",
       },
     },
+    unit: {
+      default: null,
+    },
     textRight: {
+      default: null,
+    },
+    textImportant: {
+      defaul: null,
+    },
+    isDisable: {
       default: null,
     },
   },
 };
 </script>
 <style lang="scss" scoped>
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+input:disabled {
+  background: #f8f8f8;
+  border: 1px solid #f8f8f8;
+  color: #333333;
+}
+.unit {
+  color: #333333;
+  font-size: 14px;
+  font-weight: 700;
+}
 </style>
