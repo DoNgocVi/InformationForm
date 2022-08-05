@@ -9,8 +9,8 @@
       inputType="text"
       helpText="姓"
       placeholder="入力してください"
-      v-model="form.lastnameMain"
-      :value="form.lastnameMain"
+      v-model="form.lastNameMain"
+      :value="form.lastNameMain"
     >
     </FormInput>
     <FormInput
@@ -18,7 +18,7 @@
       inputType="text"
       helpText="名"
       placeholder="入力してください"
-      v-model="form.fistnameMain"
+      v-model="form.fistNameMain"
     >
     </FormInput>
     <FormInput
@@ -42,7 +42,7 @@
       inputType="text"
       helpText="姓（ローマ字）"
       placeholder="入力してください"
-      v-model="form.lastnameRoMain"
+      v-model="form.lastNameRoMain"
     >
     </FormInput>
     <FormInput
@@ -1496,11 +1496,11 @@ export default {
           driversLicenseFontPhoto: null,
           driversLicenseBackPhoto: null,
         },
-        lastnameMain: "",
-        fistnameMain: "",
+        lastNameMain: "",
+        fistNameMain: "",
         seiMain: "",
         meiMain: "",
-        lastnameRoMain: "",
+        lastNameRoMain: "",
         fistNameRoMain: "",
         companyName: "",
         picked: [],
@@ -1804,9 +1804,9 @@ input:disabled {
       font-size: 14px;
     }
   }
-  .requireother {
+  .requireOther {
     display: flex;
-    .requireother_outline {
+    .requireOther_outline {
       border: 3px solid #ed5d5d;
 
       height: 17px;

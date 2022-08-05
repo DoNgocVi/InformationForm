@@ -19,52 +19,15 @@
       外国式氏名が戸籍に記載されている場合、国際結婚により戸籍上の姓が外国式の姓となっている、もしくは重国籍で戸籍上の氏名が外国式の氏名となっている場合、戸籍上の綴りで入力してください。
     </template>
     <FormInput
+      v-for="(item, index) in formGr1"
+      :key="index"
+      :helpText="item.helpText"
       inputType="text"
-      helpText="姓"
-      placeholder="入力してください"
-      v-model="form.lastnameMain"
-      :value="form.lastnameMain"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="名"
-      placeholder="入力してください"
-      v-model="form.fistnameMain"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="セイ"
-      placeholder="入力してください"
-      v-model="form.seiMain"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="メイ"
-      placeholder="入力してください"
-      v-model="form.meiMain"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="姓（ローマ字）"
-      placeholder="入力してください"
-      v-model="form.lastnameRoMain"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="名（ローマ字）"
-      placeholder="性別"
-      v-model="form.fistNameRoMain"
-    >
-    </FormInput>
+      v-model="form[item.key]"
+    ></FormInput>
     <FormInput
       inputType="radio"
       mainTitle="性別"
-      placeholder="入力してください"
       v-model="form.gender"
       :valueRadio="{ value1: '男性', value2: '女性' }"
     >
@@ -74,7 +37,6 @@
       <FormInput
         inputType="number"
         :isRequire="false"
-        placeholder="入力してください"
         width="116px"
         unit="年"
         v-model="form.dmy.date"
@@ -83,7 +45,6 @@
       <FormInput
         inputType="number"
         :isRequire="false"
-        placeholder="入力してください"
         width="116px"
         unit="月"
         v-model="form.dmy.month"
@@ -92,7 +53,6 @@
       <FormInput
         inputType="number"
         :isRequire="false"
-        placeholder="入力してください"
         width="116px"
         unit="日"
         v-model="form.dmy.year"
@@ -111,7 +71,6 @@
         inputType="text"
         mainTitle="ビジネスネーム"
         titleGuide=" 旧姓を利用する等の場合に入力をしてください"
-        placeholder="入力してください"
         v-model="form.companyName"
         :isRequire="false"
       >
@@ -128,7 +87,6 @@
     <FormInput
       inputType="date"
       helpText="入学年月日"
-      placeholder="入力してください"
       v-model="form.courseTime.start"
       width="160px"
     >
@@ -136,7 +94,6 @@
     <FormInput
       inputType="date"
       helpText="卒業年月日"
-      placeholder="入力してください"
       v-model="form.courseTime.end"
       width="160px"
     >
@@ -146,7 +103,6 @@
       inputType="select"
       titleGuide="学歴区分"
       :isRequire="false"
-      placeholder="入力してください"
       v-model="form.educationBg"
       width="160px"
       :optionValue="{
@@ -159,7 +115,6 @@
       class="search"
       inputType="text"
       helpText="学校名"
-      placeholder="入力してください"
       v-model="form.schoolName"
     >
     </FormInputSearch>
@@ -167,7 +122,6 @@
     <FormInput
       inputType="text"
       helpText="学部名"
-      placeholder="入力してください"
       v-model="form.facultyName"
       :isRequire="false"
     >
@@ -179,7 +133,6 @@
       <FormInput
         inputType="date"
         helpText="入学年月日"
-        placeholder="入力してください"
         v-model="form.courseTime2.start"
         width="160px"
       >
@@ -187,7 +140,6 @@
       <FormInput
         inputType="date"
         helpText="卒業年月日"
-        placeholder="入力してください"
         v-model="form.courseTime2.end"
         width="160px"
       >
@@ -196,7 +148,6 @@
         inputType="select"
         titleGuide="学歴区分"
         :isRequire="false"
-        placeholder="入力してください"
         v-model="form.educationBg2"
         width="160px"
         :optionValue="{
@@ -206,12 +157,7 @@
       >
       </FormInput>
 
-      <FormInput
-        inputType="text"
-        helpText="学校名"
-        placeholder="入力してください"
-        v-model="form.facultyName2"
-      >
+      <FormInput inputType="text" helpText="学校名" v-model="form.facultyName2">
       </FormInput>
     </template>
 
@@ -229,7 +175,6 @@
     <FormInput
       inputType="text"
       helpText="基礎年金番号"
-      placeholder="入力してください"
       v-model="form.basicPension"
     >
     </FormInput>
@@ -237,7 +182,6 @@
       inputType="text"
       mainTitle="雇用保険被保険者番号"
       titleGuide="番号をお持ちの方は必ず入力してください"
-      placeholder="入力してください"
       v-model="form.insuranceNumber"
       :isRequire="false"
     >
@@ -246,7 +190,6 @@
       inputType="text"
       mainTitle="前職会社名"
       titleGuide="雇用保険番号が不明の場合は入力をしてください"
-      placeholder="入力してください"
       v-model="form.oldCompanyName"
       :isRequire="false"
     >
@@ -274,7 +217,6 @@
     <FormInput
       inputType="radio"
       mainTitle="資格署名書類（雇用保険被保険者証）"
-      placeholder="入力してください"
       v-model="form.picked"
       :valueRadio="{ value1: '希望する', value2: '利用しない' }"
     >
@@ -287,7 +229,6 @@
       class="search"
       inputType="text"
       helpText="基礎年金番号"
-      placeholder="入力してください"
       titleGuide="｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます"
       v-model="form.searchForFinancial"
     >
@@ -296,7 +237,6 @@
       class="search"
       inputType="text"
       helpText="基礎年金番号"
-      placeholder="入力してください"
       titleGuide="｢とうきょう｣や｢しんよう｣などの一単語のみで検索できます"
       v-model="form.searchForFinancial1"
       :isActive="form.searchForFinancial"
@@ -309,7 +249,6 @@
     <FormInput
       inputType="text"
       helpText="口座番号（半角）"
-      placeholder="入力してください"
       v-model="form.accountNumber"
     >
     </FormInput>
@@ -317,7 +256,6 @@
     <FormInput
       inputType="text"
       helpText="口座名義（カタカナ）"
-      placeholder="入力してください"
       v-model="form.accountName"
     >
     </FormInput>
@@ -349,92 +287,23 @@
     </div>
 
     <FormInput
+      v-for="(item, index) in formGr2"
+      :key="index"
+      :helpText="item.helpText"
       inputType="text"
-      helpText="姓（ローマ字）"
-      placeholder="入力してください"
-      v-model="form.lastNameForeRo"
+      v-model="form[item.key]"
       :isForeigner="!form.isForeigner"
-    >
-    </FormInput>
+    ></FormInput>
     <FormInput
+      v-for="(item, index) in formGr3"
+      :key="index"
+      :helpText="item.helpText"
       inputType="text"
-      helpText="名（ローマ字）"
-      placeholder="入力してください"
-      v-model="form.nameFore"
-      :isForeigner="!form.isForeigner"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="姓（カナ）"
-      placeholder="入力してください"
-      :isForeigner="!form.isForeigner"
-      v-model="form.lastNameForeKana"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="名（カナ）"
-      placeholder="入力してください"
-      :isForeigner="!form.isForeigner"
-      v-model="form.nameForeKana"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="国籍"
-      placeholder="入力してください"
-      :isForeigner="!form.isForeigner"
-      v-model="form.nationality"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="在留資格"
-      placeholder="入力してください"
-      :isForeigner="!form.isForeigner"
+      v-model="form[item.key]"
       :isRequire="false"
-      v-model="form.residence"
-    >
-    </FormInput>
+      :isForeigner="!form.isForeigner"
+    ></FormInput>
 
-    <FormInput
-      inputType="text"
-      helpText="在留期間（満了日）"
-      placeholder="入力してください"
-      :isForeigner="!form.isForeigner"
-      :isRequire="false"
-      v-model="form.residenceTime"
-    >
-    </FormInput>
-
-    <FormInput
-      inputType="text"
-      helpText="資格外活動許可"
-      placeholder="入力してください"
-      :isForeigner="!form.isForeigner"
-      :isRequire="false"
-      v-model="form.licensesBeyond"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="就労区分"
-      placeholder="入力してください"
-      :isForeigner="!form.isForeigner"
-      :isRequire="false"
-      v-model="form.typeofWork"
-    >
-    </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="在留カード番号（半角）"
-      placeholder="入力してください"
-      :isForeigner="!form.isForeigner"
-      :isRequire="false"
-      v-model="form.residenceCardNumber"
-    >
-    </FormInput>
     <DropImages
       @inputData="updateImage"
       mainTitle="在留カードの写真（表）"
@@ -463,14 +332,12 @@
     <FormInput
       inputType="text"
       helpText="世帯主区分"
-      placeholder="入力してください"
       v-model="form.householdDivision"
     >
     </FormInput>
     <FormInput
       inputType="text"
       helpText="住居区分"
-      placeholder="入力してください"
       v-model="form.housingClassification"
     >
     </FormInput>
@@ -502,35 +369,23 @@
         <button>住所取得</button>
       </div>
     </div>
-    <FormInput
-      inputType="text"
-      helpText="都道府県"
-      placeholder="入力してください"
-      v-model="form.provinceRela"
-    >
+    <FormInput inputType="text" helpText="都道府県" v-model="form.provinceRela">
     </FormInput>
     <form-error :errors="v$.form.provinceRela.$errors" />
     <FormInput
       inputType="text"
       helpText="市区町村"
-      placeholder="入力してください"
       v-model="form.autonomousCityRela"
     >
     </FormInput>
     <form-error :errors="v$.form.autonomousCityRela.$errors" />
-    <FormInput
-      inputType="text"
-      helpText="番地"
-      placeholder="入力してください"
-      v-model="form.addressRela"
-    >
+    <FormInput inputType="text" helpText="番地" v-model="form.addressRela">
     </FormInput>
     <form-error :errors="v$.form.addressRela.$errors" />
 
     <FormInput
       inputType="text"
       helpText="建物名称・部屋番号"
-      placeholder="入力してください"
       v-model="form.buildingNameRoomNumberRela"
       :isRequire="false"
     >
@@ -538,7 +393,6 @@
     <FormInput
       inputType="text"
       helpText="電話番号（半角）"
-      placeholder="入力してください"
       :require2="true"
       titleGuide="自宅電話番号が無い場合、携帯電話番号のみ登録してください。"
       v-model="form.phoneNumber1"
@@ -547,7 +401,6 @@
     <FormInput
       inputType="text"
       helpText="携帯電話番号（半角）"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.mobilePhoneNumber"
     >
@@ -592,34 +445,22 @@
       </div>
     </div>
 
-    <FormInput
-      inputType="text"
-      helpText="都道府県"
-      placeholder="入力してください"
-      v-model="form.provinceArc"
-    >
+    <FormInput inputType="text" helpText="都道府県" v-model="form.provinceArc">
     </FormInput>
 
     <FormInput
       inputType="text"
       helpText="市区町村"
-      placeholder="入力してください"
       v-model="form.autonomousCityArc"
     >
     </FormInput>
 
-    <FormInput
-      inputType="text"
-      helpText="番地"
-      placeholder="入力してください"
-      v-model="form.addressArc"
-    >
+    <FormInput inputType="text" helpText="番地" v-model="form.addressArc">
     </FormInput>
 
     <FormInput
       inputType="text"
       helpText="建物名称・部屋番号"
-      placeholder="入力してください"
       v-model="form.buildingNameroomNumberArc"
       :isRequire="false"
     >
@@ -642,37 +483,16 @@
     <FormInput
       inputType="text"
       helpText="関係姓"
-      placeholder="入力してください"
       v-model="form.lastnameRelationship"
     >
     </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="姓"
-      placeholder="入力してください"
-      v-model="form.lastNameRela"
-    >
+    <FormInput inputType="text" helpText="姓" v-model="form.lastNameRela">
     </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="名"
-      placeholder="入力してください"
-      v-model="form.fistNameRela"
-    >
+    <FormInput inputType="text" helpText="名" v-model="form.fistNameRela">
     </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="セイ"
-      placeholder="入力してください"
-      v-model="form.surename"
-    >
+    <FormInput inputType="text" helpText="セイ" v-model="form.surename">
     </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="メイ"
-      placeholder="入力してください"
-      v-model="form.nameMei"
-    >
+    <FormInput inputType="text" helpText="メイ" v-model="form.nameMei">
     </FormInput>
 
     <div class="zipCode">
@@ -702,32 +522,20 @@
         <button>住所取得</button>
       </div>
     </div>
-    <FormInput
-      inputType="text"
-      helpText="都道府県"
-      placeholder="入力してください"
-      v-model="form.province"
-    >
+    <FormInput inputType="text" helpText="都道府県" v-model="form.province">
     </FormInput>
     <FormInput
       inputType="text"
       helpText="市区町村"
-      placeholder="入力してください"
       v-model="form.autonomousCity"
     >
     </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="番地"
-      placeholder="入力してください"
-      v-model="form.address"
-    >
+    <FormInput inputType="text" helpText="番地" v-model="form.address">
     </FormInput>
 
     <FormInput
       inputType="text"
       helpText="建物名称・部屋番号"
-      placeholder="入力してください"
       v-model="form.buildingNameroomNumber"
       :isRequire="false"
     >
@@ -735,7 +543,6 @@
     <FormInput
       inputType="text"
       helpText="電話番号（半角）"
-      placeholder="入力してください"
       :require2="true"
       titleGuide="自宅電話番号が無い場合、携帯電話番号のみ登録してください。"
       v-model="form.phoneNumber"
@@ -746,7 +553,6 @@
     <FormInput
       inputType="text"
       helpText="携帯電話番号（半角）"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.mobilePhoneNumberRela"
     >
@@ -764,7 +570,6 @@
     <FormInput
       inputType="text"
       helpText="続柄"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.relationship"
     >
@@ -772,7 +577,6 @@
     <FormInput
       inputType="text"
       helpText="姓"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.lastNameRela2"
     >
@@ -781,7 +585,6 @@
     <FormInput
       inputType="text"
       helpText="名"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.fistNameRela2"
     >
@@ -790,7 +593,6 @@
     <FormInput
       inputType="text"
       helpText="セイ"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.surename2"
     >
@@ -799,7 +601,6 @@
     <FormInput
       inputType="text"
       helpText="メイ"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.nameMei2"
     >
@@ -808,7 +609,6 @@
     <FormInput
       inputType="radio"
       mainTitle="性別"
-      placeholder="入力してください"
       v-model="form.genderRela"
       :valueRadio="{ value1: '男性', value2: '女性' }"
     >
@@ -817,7 +617,6 @@
       <FormInput
         inputType="number"
         :isRequire="false"
-        placeholder="入力してください"
         width="116px"
         unit="年"
         v-model="form.dmy2.date"
@@ -826,7 +625,6 @@
       <FormInput
         inputType="number"
         :isRequire="false"
-        placeholder="入力してください"
         width="116px"
         unit="月"
         v-model="form.dmy2.month"
@@ -835,7 +633,6 @@
       <FormInput
         inputType="number"
         :isRequire="false"
-        placeholder="入力してください"
         width="116px"
         unit="日"
         v-model="form.dmy2.year"
@@ -876,7 +673,6 @@
     <FormInput
       inputType="text"
       helpText="都道府県"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.provinceRela2"
     >
@@ -884,7 +680,6 @@
     <FormInput
       inputType="text"
       helpText="市区町村"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.autonomousCity2"
     >
@@ -893,7 +688,6 @@
     <FormInput
       inputType="text"
       helpText="番地"
-      placeholder="入力してください"
       :require2="true"
       v-model="form.addressRela2"
     >
@@ -902,7 +696,6 @@
     <FormInput
       inputType="text"
       helpText="建物名称・部屋番号"
-      placeholder="入力してください"
       v-model="form.buildingNameRoomNumber2"
       :isRequire="false"
     >
@@ -911,7 +704,6 @@
     <FormInput
       inputType="text"
       helpText="建物名称・部屋番号"
-      placeholder="入力してください"
       v-model="form.workOrSchoolName"
       :isRequire="false"
     >
@@ -920,7 +712,6 @@
     <FormInput
       inputType="text"
       helpText="建物名称・部屋番号"
-      placeholder="入力してください"
       v-model="form.occupationClassification"
       :isRequire="false"
     >
@@ -931,7 +722,6 @@
       mainTitle="職業区分でその他を選択の理由"
       titleGuide=" その他を選択した方は、詳細内容を入力してください。学生を選択した方は、大学<br />
         ○年生など、具体的に入力をお願いいたします。"
-      placeholder="入力してください"
       v-model="form.reasonsChoseJob"
       :isRequire="false"
     >
@@ -939,7 +729,6 @@
     <FormInput
       inputType="text"
       helpText="健康保険扶養区分"
-      placeholder="入力してください"
       v-model="form.healthInsuranceClassification"
       :isRequire="false"
     >
@@ -947,7 +736,6 @@
     <FormInput
       inputType="text"
       helpText="健康保険扶養区分"
-      placeholder="入力してください"
       v-model="form.annualIncome"
       :isRequire="false"
       :width="'161px'"
@@ -967,26 +755,11 @@
     </template>
     <div class="field-name" style="font-weight: 400">通勤手段1</div>
 
-    <FormInput
-      inputType="text"
-      helpText="通勤手段"
-      placeholder="入力してください"
-      v-model="form.going"
-    >
+    <FormInput inputType="text" helpText="通勤手段" v-model="form.going">
     </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="出発地"
-      placeholder="入力してください"
-      v-model="form.departure"
-    >
+    <FormInput inputType="text" helpText="出発地" v-model="form.departure">
     </FormInput>
-    <FormInput
-      inputType="text"
-      helpText="到着地"
-      placeholder="入力してください"
-      v-model="form.destination"
-    >
+    <FormInput inputType="text" helpText="到着地" v-model="form.destination">
     </FormInput>
     <a
       @click.prevent="form.isMethodWork = true"
@@ -1012,14 +785,12 @@
       <FormInput
         inputType="text"
         helpText="距離（無料優先）"
-        placeholder="入力してください"
         v-model="form.distance"
       >
       </FormInput>
       <FormInput
         inputType="text"
         helpText="所要時間（無料優先）"
-        placeholder="入力してください"
         width="161px"
         unit="分"
         v-model="form.timeRequired"
@@ -1028,7 +799,6 @@
       <FormInput
         inputType="text"
         helpText="距離（高速優先）"
-        placeholder="入力してください"
         width="161px"
         unit="Km"
         v-model="form.distance2"
@@ -1037,7 +807,6 @@
       <FormInput
         inputType="text"
         helpText="時間（高速優先）"
-        placeholder="入力してください"
         width="161px"
         unit="分"
         v-model="form.timeSpeedHight"
@@ -1046,7 +815,6 @@
       <FormInput
         inputType="text"
         helpText="高速料金"
-        placeholder="入力してください"
         width="161px"
         unit="円"
         v-model="form.hightSpeed"
@@ -1083,25 +851,18 @@
       </div>
       <div class="mt-5">
         <div class="field-name">通勤手段2</div>
-        <FormInput
-          inputType="text"
-          helpText="通勤手段"
-          placeholder="入力してください"
-          v-model="form.commute"
-        >
+        <FormInput inputType="text" helpText="通勤手段" v-model="form.commute">
         </FormInput>
       </div>
       <FormInput
         inputType="text"
         helpText="出発地"
-        placeholder="入力してください"
         v-model="form.departurePublic"
       >
       </FormInput>
       <FormInput
         inputType="text"
         helpText="到着地"
-        placeholder="入力してください"
         v-model="form.destinationPublic"
       >
       </FormInput>
@@ -1259,7 +1020,6 @@
     <div>
       <FormInput
         inputType="radio"
-        placeholder="入力してください"
         v-model="form.isCarCheck"
         :valueRadio="{ value1: 'はい', value2: 'いいえ' }"
       >
@@ -1267,7 +1027,6 @@
       <div v-if="form.isCarCheck === 'はい'">
         <FormInput
           inputType="text"
-          placeholder="入力してください"
           helpText="必須"
           v-model="form.forreasonForApplication"
           textImportant="※その他を選択した場合は、必ず理由を入力してください"
@@ -1286,7 +1045,6 @@
 
         <FormInput
           inputType="text"
-          placeholder="入力してください"
           helpText="通勤車両"
           v-model="form.commuterVehicle"
         >
@@ -1303,7 +1061,6 @@
     <!-- Select or drop image with Vuejs-->
     <FormInput
       inputType="radio"
-      placeholder="入力してください"
       v-model="form.isCarCheck2"
       :valueRadio="{ value1: 'はい', value2: 'いいえ' }"
     >
@@ -1312,7 +1069,6 @@
     <div v-if="form.isCarCheck2 === 'はい'">
       <FormInput
         inputType="text"
-        placeholder="入力してください"
         helpText="申請事由"
         v-model="form.reasonForApplication"
         textImportant="※その他を選択した場合は、必ず理由を入力してください"
@@ -1412,6 +1168,79 @@ export default {
 
   data() {
     return {
+      formGr1: [
+        {
+          key: "lastNameMain",
+          helpText: "姓（ローマ字）",
+        },
+        {
+          key: "fistNameMain",
+          helpText: "名（ローマ字）",
+        },
+        {
+          key: "seiMain",
+          helpText: "姓（カナ）",
+        },
+
+        {
+          key: "meiMain",
+          helpText: "名（カナ）",
+        },
+        {
+          key: "lastNameRoMain",
+          helpText: "姓（ローマ字）",
+        },
+        {
+          key: "fistNameRoMain",
+          helpText: "国籍",
+        },
+      ],
+      formGr2: [
+        {
+          key: "lastNameForeRo",
+          helpText: "姓",
+        },
+        {
+          key: "nameFore",
+          helpText: "名",
+        },
+        {
+          key: "lastNameForeKana",
+          helpText: "セイ",
+        },
+
+        {
+          key: "nameForeKana",
+          helpText: "メイ",
+        },
+        {
+          key: "nationality",
+          helpText: "姓（ローマ字）",
+        },
+      ],
+      formGr3: [
+        {
+          key: "residence",
+          helpText: "在留資格",
+        },
+        {
+          key: "residenceTime",
+          helpText: "在留期間（満了日）",
+        },
+        {
+          key: "licensesBeyond",
+          helpText: "資格外活動許可",
+        },
+
+        {
+          key: "typeofWork",
+          helpText: "就労区分",
+        },
+        {
+          key: "residenceCardNumber",
+          helpText: "在留カード番号（半角）",
+        },
+      ],
       form: {
         reasonHightway: false,
         isMethodWork: false,
@@ -1429,11 +1258,11 @@ export default {
           driversLicenseFontPhoto: null,
           driversLicenseBackPhoto: null,
         },
-        lastnameMain: "",
-        fistnameMain: "",
+        lastNameMain: "",
+        fistNameMain: "",
         seiMain: "",
         meiMain: "",
-        lastnameRoMain: "",
+        lastNameRoMain: "",
         fistNameRoMain: "",
         companyName: "",
         picked: [],
@@ -1586,7 +1415,7 @@ export default {
 
     async handleSubmit() {
       // await this.v$.$validate();
-      const isValid = await this.v$.$validate();
+      const isValid = true;
       if (this.dataVuex && isValid) {
         this.$store.dispatch("setInfomation", { data: this.form, step: 3 });
         this.$router.push("/form3");
@@ -1610,7 +1439,7 @@ export default {
   created() {
     this.scrollToTop();
     this.$store.dispatch("setStep", 2);
-    if (this.dataVuex.lastnameMain) {
+    if (this.dataVuex.lastNameMain) {
       this.form = this.dataVuex;
     }
   },
@@ -1734,9 +1563,9 @@ p {
       font-size: 14px;
     }
   }
-  .requireother {
+  .requireOther {
     display: flex;
-    .requireother_outline {
+    .requireOther_outline {
       border: 3px solid #ed5d5d;
 
       height: 17px;

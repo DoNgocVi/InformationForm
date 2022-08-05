@@ -3,8 +3,8 @@
     <div v-if="mainTitle" class="main_title">{{ mainTitle }}</div>
     <!-- type 2 -->
     <div v-if="require2" class="text_require">
-      <div class="requireother">
-        <div class="requireother_outline">
+      <div class="requireOther">
+        <div class="requireOther_outline">
           <p>どちらか</p>
         </div>
         <p class="require">必須</p>
@@ -101,7 +101,8 @@ export default {
       default: null,
     },
     placeholder: {
-      default: "",
+      type: String,
+      default: "入力してください",
     },
     valueRadio: {
       default: {},
