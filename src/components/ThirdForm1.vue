@@ -1,19 +1,5 @@
 <template>
   <FormGroup>
-    <template #title>本人確認書類</template>
-    <!-- Select or drop image with Vuejs-->
-    <DropImages
-      :isRequire="true"
-      @inputData="updateImage"
-      helpText="運転免許証両面もしくは住民票を添付してください"
-      :linkImage="form.previewImage.photoDocument"
-      refEl="verificationDocuments"
-      setData="photoDocument"
-    >
-    </DropImages>
-  </FormGroup>
-
-  <FormGroup>
     <template #title>基本情報登録</template>
     <template #infoText>
       外国式氏名が戸籍に記載されている場合、国際結婚により戸籍上の姓が外国式の姓となっている、もしくは重国籍で戸籍上の氏名が外国式の氏名となっている場合、戸籍上の綴りで入力してください。
@@ -268,8 +254,8 @@
     </FormInput>
 
     <DropImages
-      :isDisable="true"
       @inputData="updateImage"
+      :isDisable="true"
       mainTitle="資格証明書類（年金手帳）"
       titleGuide="年金手帳の写真を添付してください"
       :linkImage="form.previewImage.pensionBookPhoto"
@@ -278,8 +264,8 @@
     >
     </DropImages>
     <DropImages
-      :isDisable="true"
       @inputData="updateImage"
+      :isDisable="true"
       mainTitle="資格署名書類（雇用保険被保険者証）"
       titleGuide="雇用保険被保険者証の写真を添付してください"
       :linkImage="form.previewImage.identificationPhoto"
@@ -1083,6 +1069,7 @@
         refEl="routeMap"
         setData="routeMapPhoto"
         :isForeigner="!form.isForeigner"
+        :isDisable="true"
       >
       </DropImages>
       <FormInput
@@ -1431,13 +1418,14 @@
           :linkImage="form.previewImage.vehicleVerificationPhoto"
           refEl="vehicleVerification"
           setData="vehicleVerificationPhoto"
+          :isDisable="true"
         >
         </DropImages>
       </div>
       <div>
         <DropImages
-          :isDisable="false"
           @inputData="updateImage"
+          :isDisable="true"
           mainTitle="任意保険の保険証コピー"
           titleGuide="任意保険の保険証のコピーを添付してください"
           :linkImage="form.previewImage.driversLicenseFontPhoto"
@@ -1448,8 +1436,8 @@
       </div>
       <div>
         <DropImages
-          :isDisable="false"
           @inputData="updateImage"
+          :isDisable="true"
           mainTitle="任意保険の保険証コピー"
           titleGuide="任意保険の保険証のコピーを添付してください"
           :isShow="form.previewImage.driversLicenseBackPhoto"
@@ -1466,7 +1454,7 @@
     続けて扶養控除申告の入力をお願いいたします。
   </p>
   <!-- submit form -->
-  <FormButton :onSubmit="handleSubmit"> 入社手続きの入力に進む </FormButton>
+    <ModalComponent></ModalComponent>
 </template>
 
 <script>
@@ -1476,6 +1464,7 @@ import CustomForm from "./FieldForm/CustomForm.vue";
 import DropImages from "./FieldForm/DropImages.vue";
 import FormInputSearch from "./FieldForm/FormInputSearch.vue";
 import FormButton from "./layout/FormButton.vue";
+import ModalComponent from "./layout/ModalComponent.vue";
 
 export default {
   components: {
@@ -1485,6 +1474,7 @@ export default {
     DropImages,
     FormInputSearch,
     FormButton,
+    ModalComponent,
   },
 
   data() {
@@ -1569,7 +1559,7 @@ export default {
         arcChecked: false,
         zipCodeArc: {
           zip1: null,
-          zip2L: null,
+          zip2: null,
         },
         provinceArc: "",
         autonomousCityArc: "",
@@ -1644,13 +1634,9 @@ export default {
       }
     },
 
-    async handleSubumit() {
+    async handleSubmit() {
       // const isValid = await this.v$.$validate();
-      if (this.dataVuex) {
-        this.$store.dispatch("setInfomation", { data: this.form, step: 3 });
-      } else {
-        alert("chưa nhập đủ các field");
-      }
+      this.$router.push("/complete");
     },
     scrollToTop() {
       window.scrollTo(0, 0);
@@ -1676,8 +1662,6 @@ export default {
 }
 p {
   margin: 0;
-}
-input {
 }
 input:disabled {
   background-color: #f8f8f8;

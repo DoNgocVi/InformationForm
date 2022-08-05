@@ -7,7 +7,7 @@
       <h1>入社手続きの申請をします</h1>
       <div class="modal_warning--text">
         <div>
-          <img src="../assets/images/Group_warn.png" alt="" />
+          <img src="../../assets/images/Group_warn.png" alt="" />
           <p>ご確認ください</p>
         </div>
         <p>
@@ -34,7 +34,6 @@ export default {
   methods: {
     handleSubmit() {
       this.isShow = true;
-      console.log(this.isShow);
     },
     handleAccept() {
       //get data from vuex 

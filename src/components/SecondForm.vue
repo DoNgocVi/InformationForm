@@ -1,34 +1,16 @@
-
 <template>
   <FormGroup>
-    <template #title>顔写真の登録</template>
-    <template #infoText>
-      システムの本人アイコンに使用します。あなたの顔が分かる写真を登録してください。未登録の場合、姓名の頭文字が表示されます。顔写真見本のように撮影してください。また、背景は白、スーツ着用、身だしなみルールに沿って撮影をお願いいたします。
-    </template>
-
+    <template #title>本人確認書類</template>
+    <!-- Select or drop image with Vuejs-->
     <DropImages
       @inputData="updateImage"
+      :isShow="form.previewImage.facePhoto"
       :linkImage="form.previewImage.facePhoto"
       refEl="imgFace"
       setData="facePhoto"
     >
     </DropImages>
-    <!-- Select or drop image with Vuejs-->
     <form-error :errors="v$.form.previewImage.facePhoto.$errors" />
-  </FormGroup>
-
-  <FormGroup>
-    <template #title>本人確認書類</template>
-    <!-- Select or drop image with Vuejs-->
-    <DropImages
-      :isRequire="true"
-      @inputData="updateImage"
-      helpText="運転免許証両面もしくは住民票を添付してください"
-      :linkImage="form.previewImage.photoDocument"
-      refEl="verificationDocuments"
-      setData="photoDocument"
-    >
-    </DropImages>
   </FormGroup>
 
   <FormGroup>
@@ -271,8 +253,8 @@
     </FormInput>
 
     <DropImages
-      :isDisable="true"
       @inputData="updateImage"
+      :isDisable="true"
       mainTitle="資格証明書類（年金手帳）"
       titleGuide="年金手帳の写真を添付してください"
       :linkImage="form.previewImage.pensionBookPhoto"
@@ -1534,7 +1516,7 @@ export default {
         //
         zipCodeRela2: {
           zip1: null,
-          zip2L: null,
+          zip2: null,
         },
         dmy2: {
           date: "",
@@ -1602,19 +1584,19 @@ export default {
       }
     },
 
-    updateImage(data) {
-      const curRefImage = data.setData;
-      this.form.previewImage[curRefImage] = data.image;
-    },
     async handleSubmit() {
       // await this.v$.$validate();
-      const isValid = true;
+      const isValid = await this.v$.$validate();
       if (this.dataVuex && isValid) {
         this.$store.dispatch("setInfomation", { data: this.form, step: 3 });
         this.$router.push("/form3");
       } else {
         alert("chưa nhập đủ các field");
       }
+    },
+    updateImage(data) {
+      const curRefImage = data.setData;
+      this.form.previewImage[curRefImage] = data.image;
     },
     scrollToTop() {
       window.scrollTo(0, 0);
@@ -1624,16 +1606,11 @@ export default {
     dataVuex() {
       return this.$store.state.data;
     },
-    isValid() {
-      return async () => {
-        return await this.v$.$validate();
-      };
-    },
   },
   created() {
     this.scrollToTop();
     this.$store.dispatch("setStep", 2);
-    if (this.dataVuex.provinceRela) {
+    if (this.dataVuex.lastnameMain) {
       this.form = this.dataVuex;
     }
   },

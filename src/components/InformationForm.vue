@@ -100,8 +100,6 @@ export default {
     const year = d.getFullYear();
     const dmy = `${day}/${month}/${year}`;
     this.DMY = dmy;
-    const abc = this.$route.params
-    console.log(abc);
   },
 };
 </script> 
@@ -171,6 +169,10 @@ export default {
     &--img {
       display: flex;
       gap: 8px;
+      img {
+        width: 22px;
+        height: 20px;
+      }
       p {
         color: #333333;
         font-weight: 700;
