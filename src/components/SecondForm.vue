@@ -14,9 +14,11 @@
   </FormGroup>
 
   <FormGroup>
-    <template #title>基本情報登録</template>
+    <template #title>{{
+      $t("title.identity_verification_documents")
+    }}</template>
     <template #infoText>
-      外国式氏名が戸籍に記載されている場合、国際結婚により戸籍上の姓が外国式の姓となっている、もしくは重国籍で戸籍上の氏名が外国式の氏名となっている場合、戸籍上の綴りで入力してください。
+      {{ $t("desc.identity_verification_documents_desc") }}
     </template>
     <FormInput
       v-for="(item, index) in formGr1"
@@ -79,9 +81,9 @@
   </FormGroup>
 
   <FormGroup>
-    <template #title>最終学歴</template>
+    <template #title>{{ $t("title.final_education") }}</template>
     <template #infoText>
-      最終学歴が大学院の方は、大学を登録後に「＋学歴を追加する」から大学院を登録してください。
+      {{ $t("desc.final_education_desc") }}
     </template>
     <div class="title">学歴1</div>
     <FormInput
@@ -171,7 +173,7 @@
   </FormGroup>
 
   <FormGroup :isDocument="false">
-    <template #title>保険年金</template>
+    <template #title>{{ $t("title.insurance_pension") }}</template>
     <FormInput
       inputType="text"
       helpText="基礎年金番号"
@@ -224,7 +226,7 @@
   </FormGroup>
 
   <FormGroup :isDocument="false">
-    <template #title>給与振込口座</template>
+    <template #title>{{ $t("title.salary_transfer_account") }}</template>
     <FormInputSearch
       class="search"
       inputType="text"
@@ -262,7 +264,7 @@
   </FormGroup>
 
   <FormGroup>
-    <template #title>在留カード（外国籍の方はご記入ください） </template>
+    <template #title>{{ $t("title.residence_card") }}</template>
     <!-- last -->
     <div class="white_content">
       <label class="label-checkbox" for="foreigner"
@@ -328,7 +330,7 @@
   </FormGroup>
 
   <FormGroup :isDocument="false">
-    <template #title> 現住所を登録 </template>
+    <template #title> {{ $t("title.current_address") }} </template>
     <FormInput
       inputType="text"
       helpText="世帯主区分"
@@ -408,7 +410,7 @@
   </FormGroup>
 
   <FormGroup>
-    <template #title>住民票記載の住所を登録</template>
+    <template #title>{{ $t("title.address_resident_card") }}</template>
     <div class="white_content">
       <input
         type="checkbox"
@@ -461,14 +463,14 @@
     <FormInput
       inputType="text"
       helpText="建物名称・部屋番号"
-      v-model="form.buildingNameroomNumberArc"
+      v-model="form.buildingNameRoomNumberArc"
       :isRequire="false"
     >
     </FormInput>
   </FormGroup>
   <!-- 緊急連絡先を登録 đăng ký liên hệ khẩn cấp -->
   <FormGroup>
-    <template #title>緊急連絡先を登録</template>
+    <template #title>{{ $t("title.register_emergency_contact") }}</template>
     <template #infoText>
       記入優先順位 <br />
       ①一親等：実父母、義父母、別居の兄弟姉妹、配偶者、子<br />
@@ -477,20 +479,19 @@
       ④三親等：別居の叔父叔母、甥、姪。配偶者の兄弟姉妹<br />
       ⑤知人、友人等
     </template>
-
     <p style="margin: 10px 0px">緊急連絡先1</p>
 
     <FormInput
       inputType="text"
       helpText="関係姓"
-      v-model="form.lastnameRelationship"
+      v-model="form.lastNameRelationship"
     >
     </FormInput>
     <FormInput inputType="text" helpText="姓" v-model="form.lastNameRela">
     </FormInput>
     <FormInput inputType="text" helpText="名" v-model="form.fistNameRela">
     </FormInput>
-    <FormInput inputType="text" helpText="セイ" v-model="form.surename">
+    <FormInput inputType="text" helpText="セイ" v-model="form.sureName">
     </FormInput>
     <FormInput inputType="text" helpText="メイ" v-model="form.nameMei">
     </FormInput>
@@ -536,7 +537,7 @@
     <FormInput
       inputType="text"
       helpText="建物名称・部屋番号"
-      v-model="form.buildingNameroomNumber"
+      v-model="form.buildingNameRoomNumber"
       :isRequire="false"
     >
     </FormInput>
@@ -561,7 +562,7 @@
   </FormGroup>
   <!-- 家族情報を登録 đăng ký thông tin gia đình -->
   <FormGroup :isDocument="false">
-    <template #title> 家族情報を登録 </template>
+    <template #title> {{ $t("title.register_family_information") }} </template>
     <template #infoText>
       一等親以内は同居/別居に関わらず記入<br />
       二親等以上は同居、もしくは扶養義務がある場合に限り記載
@@ -594,7 +595,7 @@
       inputType="text"
       helpText="セイ"
       :require2="true"
-      v-model="form.surename2"
+      v-model="form.sureName2"
     >
     </FormInput>
 
@@ -747,7 +748,7 @@
     >
   </FormGroup>
   <FormGroup>
-    <template #title> 通勤ルート </template>
+    <template #title> {{ $t("title.commute_route") }} </template>
     <div class="form_title"></div>
     <template #infoText>
       経路が２つ以上ある場合は、運賃の安い方を選択してください。<br />
@@ -832,22 +833,22 @@
           type="checkbox"
           id="foreigner"
           style="margin-right: 8px"
-          v-model="form.reasonHightway"
+          v-model="form.reasonHightWay"
         /><label for="foreigner">外国籍の方はチェックを入れてください</label>
       </div>
       <div>
         <div class="text_require">
-          <p class="require" :class="[{ noActive: !form.reasonHightway }]">
+          <p class="require" :class="[{ noActive: !form.reasonHightWay }]">
             必須
           </p>
           <p
             class="help-text"
-            :class="{ filed_noActive: !form.reasonHightway }"
+            :class="{ filed_noActive: !form.reasonHightWay }"
           >
             口座番号（半角）
           </p>
         </div>
-        <textarea v-model="form.reasonHightwaytext"></textarea>
+        <textarea v-model="form.reasonHightWayText"></textarea>
       </div>
       <div class="mt-5">
         <div class="field-name">通勤手段2</div>
@@ -883,7 +884,7 @@
       <br />
       <div>
         <div class="white_content">
-          <div class="spaceBettwen">
+          <div class="spaceBetween">
             <p>テキストテキスト駅</p>
             <img src="../assets/images/ArrowsRight.png" alt="" />
             <p>テキストテキスト駅</p>
@@ -1011,7 +1012,7 @@
   </FormGroup>
 
   <FormGroup>
-    <template #title> 自家用車通勤について </template>
+    <template #title> {{ $t("title.private_car") }} </template>
     <div class="text_require">
       <p class="require">必須</p>
       <p class="help-text">自家用車の通勤許可を申請しますか？</p>
@@ -1053,7 +1054,7 @@
     </div>
   </FormGroup>
   <FormGroup>
-    <template #title>自家用車の業務使用許可について</template>
+    <template #title>{{ $t("title.owned_car") }}</template>
     <div class="text_require">
       <p class="require">必須</p>
       <p class="help-text">申請事由</p>
@@ -1242,7 +1243,7 @@ export default {
         },
       ],
       form: {
-        reasonHightway: false,
+        reasonHightWay: false,
         isMethodWork: false,
         isShowRoute: false,
         isShowAddShool: false,
@@ -1314,7 +1315,7 @@ export default {
         province: "",
         autonomousCity: "",
         address: "",
-        buildingNameroomNumber: "",
+        buildingNameRoomNumber: "",
         phoneNumber: null,
         mobilePhoneNumber: null,
         phoneNumber1: null,
@@ -1326,11 +1327,11 @@ export default {
         provinceArc: "",
         autonomousCityArc: "",
         addressArc: "",
-        buildingNameroomNumberArc: "",
-        lastnameRelationship: "",
-        lastnameRela: "",
+        buildingNameRoomNumberArc: "",
+        lastNameRelationship: "",
+        lastNameRela: "",
         fistNameRela: "",
-        surename: "",
+        sureName: "",
         nameMei: "",
         zipCodeRela: {
           zip1: null,
@@ -1355,7 +1356,7 @@ export default {
         relationship: "",
         lastNameRela2: "",
         fistNameRela2: "",
-        surename2: "",
+        sureName2: "",
         nameMei2: "",
         genderRela: "",
         //
@@ -1526,11 +1527,6 @@ p {
       opacity: 0;
     }
   }
-  .haflInput {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
   .upAndDown {
     display: flex;
     align-items: center;
@@ -1542,7 +1538,7 @@ p {
     margin-top: 8px;
     display: block;
   }
-  .spaceBettwen {
+  .spaceBetween {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1604,7 +1600,7 @@ p {
     div {
       display: flex;
       align-items: center;
-
+      gap: 16px;
       input {
         padding: 8px;
         width: 116px;
@@ -1624,7 +1620,7 @@ p {
       border-radius: 4px;
       background-color: #b2b1ff;
       color: #ffffff;
-      margin-left: 34px;
+      margin-left: 8px;
     }
   }
   .display_info {
@@ -1730,9 +1726,10 @@ p {
     font-size: 1.4rem;
     background-color: #ffffff;
     line-height: 1.7;
-    padding: 18px 8px;
+    padding: 12px 8px;
     border: 1px solid #dcdcdc;
     border-radius: 4px;
+    margin-bottom: 10px;
     p {
       color: #333333;
     }

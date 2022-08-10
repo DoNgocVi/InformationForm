@@ -1,0 +1,20 @@
+{
+  "title": {
+    "identity_verification_documents": "基本情報登録",
+    "final_education": "最終学歴",
+    "insurance_pension": "保険年金",
+    "salary_transfer_account": "給与振込口座",
+    "residence_card": "在留カード（外国籍の方はご記入ください）",
+    "current_address": "現住所を登録",
+    "address_resident_card": "住民票記載の住所を登録",
+    "register_emergency_contact": "緊急連絡先を登録",
+    "register_family_information": "家族情報を登録",
+    "commute_route": "通勤ルート",
+    "private_car": "自家用車通勤について",
+    "owned_car": "自家用車の業務使用許可について"
+  },
+  "desc": {
+    "identity_verification_documents_desc": "外国式氏名が戸籍に記載されている場合、国際結婚により戸籍上の姓が外国式の姓となっている、もしくは重国籍で戸籍上の氏名が外国式の氏名となっている場合、戸籍上の綴りで入力してください。",
+    "final_education_desc": "最終学歴が大学院の方は、大学を登録後に「＋学歴を追加する」から大学院を登録してください。"
+  }
+}
